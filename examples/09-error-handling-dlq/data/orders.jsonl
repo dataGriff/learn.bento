@@ -1,0 +1,6 @@
+{"order_id":"o-1","customer_id":"alice","sku":"A","qty":2,"price":10}
+not-actually-json-this-line-will-fail-to-parse
+{"order_id":"o-3","customer_id":"carol","sku":"C","qty":0,"price":5}
+{"order_id":"o-4","customer_id":"dave","sku":"D","qty":1,"price":250}
+{"order_id":"o-5","customer_id":"erin","price":75}
+{"order_id":"o-6","customer_id":"frank","sku":"F","qty":3,"price":40}

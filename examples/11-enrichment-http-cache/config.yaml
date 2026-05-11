@@ -1,0 +1,67 @@
+# Cache-aside HTTP enrichment.
+#
+# For each event, look up city/state/country from a free zip-code API,
+# but only if we don't have it cached. Cache + rate limit protect the
+# upstream service.
+
+input:
+  generate:
+    interval: 1s
+    mapping: |
+      let zips = ["90210","10001","73301","94016","60601"]
+      root.user_id = uuid_v4()
+      root.zip     = $zips.index(random_int(min:0, max:4))
+
+cache_resources:
+  - label: zip_cache
+    memory:
+      default_ttl: 1h        # cache geo lookups for an hour
+
+rate_limit_resources:
+  - label: zip_api
+    local:
+      count:    5            # at most 5 requests …
+      interval: 1s           # … per second to the upstream API
+
+pipeline:
+  processors:
+
+    - branch:
+        # Pick what to send into the branch.
+        request_map: 'root = this.zip'
+
+        processors:
+
+          # 1) Try the cache first.
+          - cache:
+              resource: zip_cache
+              operator: get
+              key:      ${! content() }
+
+          # 2) On cache MISS the previous step errors. Use `catch` to do the
+          #    HTTP lookup, store it in cache, and return the result.
+          - catch:
+              - http:
+                  url: https://api.zippopotam.us/us/${! content() }
+                  verb: GET
+                  rate_limit: zip_api
+              - cache:
+                  resource: zip_cache
+                  operator: set
+                  key:      ${! meta("kafka_key").or(content().string()) }
+                  value:    ${! content() }
+
+          # 3) Re-shape the upstream response into our enriched fields.
+          - mapping: |
+              let body = content().parse_json()
+              root.city    = $body.places.index(0).get("place name")
+              root.state   = $body.places.index(0).get("state")
+              root.country = $body.country
+
+        # Merge the branch result into the original event.
+        result_map: 'root.location = this'
+
+output:
+  file:
+    path:  ./examples/11-enrichment-http-cache/out/enriched.jsonl
+    codec: lines

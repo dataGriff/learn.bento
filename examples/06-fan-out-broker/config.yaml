@@ -1,0 +1,54 @@
+# A single source, three sinks, three different shapes — produced by
+# per-branch processors inside a `fan_out` broker.
+
+input:
+  file:
+    paths:
+      - ./examples/04-bloblang-transform/data/events.jsonl
+    codec: lines
+
+pipeline:
+  processors:
+    # Pre-compute total + tier so each branch can use it.
+    - mapping: |
+        root = if this.items.length() == 0 { deleted() } else { this }
+        root.total = this.items.map_each(i -> i.qty * i.price).sum()
+        root.tier  = match {
+          root.total >= 200 => "gold",
+          root.total >= 50  => "silver",
+          _                 => "bronze",
+        }
+
+output:
+  broker:
+    pattern: fan_out
+    outputs:
+
+      # 1) Verbatim JSON for downstream consumers.
+      - file:
+          path:  ./examples/06-fan-out-broker/out/raw.jsonl
+          codec: lines
+
+      # 2) A redacted, human-readable audit line.
+      - processors:
+          - mapping: |
+              root = "%s | id=%s | tier=%s | total=%v".format(
+                now().ts_format("2006-01-02T15:04:05Z"),
+                this.id,
+                this.tier,
+                this.total,
+              )
+        file:
+          path:  ./examples/06-fan-out-broker/out/audit.log
+          codec: lines
+
+      # 3) A trimmed-down summary for analytics.
+      - processors:
+          - mapping: |
+              root = {}
+              root.id    = this.id
+              root.total = this.total
+              root.tier  = this.tier
+        file:
+          path:  ./examples/06-fan-out-broker/out/summary.jsonl
+          codec: lines

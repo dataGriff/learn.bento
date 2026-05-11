@@ -1,0 +1,126 @@
+# End-to-end pipeline:
+#   WarpStream:orders -> validate -> enrich (HTTP+cache) -> window/aggregate
+#                     -> fan-out (WarpStream:orders.rollup + file)
+#                     -> errored() routes to WarpStream:orders.dlq + file
+#
+# Run with:  make ex12
+# Pre-req:   make warpstream-up && make ws-topic NAME=orders ...
+
+http:
+  address: 0.0.0.0:4196     # admin/metrics on 4196 to avoid clash with example 03
+
+input:
+  kafka_franz:
+    seed_brokers:      [ "${WARPSTREAM_BROKER:localhost:9092}" ]
+    topics:            [ "${IN_TOPIC:orders}" ]
+    consumer_group:    "${GROUP:bento-orders-end-to-end}"
+    start_from_oldest: true
+
+cache_resources:
+  - label: zip_cache
+    memory:
+      default_ttl: 1h
+
+rate_limit_resources:
+  - label: zip_api
+    local: { count: 5, interval: 1s }
+
+pipeline:
+  processors:
+
+    # ---- validate ----
+    - try:
+        - mapping: |
+            if this.order_id   == null { throw("missing order_id") }
+            if this.customer_id == null { throw("missing customer_id") }
+            if this.qty == null || this.qty <= 0 { throw("bad qty") }
+            if this.price == null || this.price < 0 { throw("bad price") }
+            root = this
+            root.total = this.qty * this.price
+            root.zip   = this.zip.or("90210")    # synthetic default if not present
+
+    # ---- enrich (cache-aside) ----
+    - try:
+        - branch:
+            request_map: 'root = this.zip'
+            processors:
+              - cache: { resource: zip_cache, operator: get, key: '${! content() }' }
+              - catch:
+                  - http:
+                      url: https://api.zippopotam.us/us/${! content() }
+                      verb: GET
+                      rate_limit: zip_api
+                  - cache: { resource: zip_cache, operator: set, key: '${! content() }', value: '${! content() }' }
+              - mapping: |
+                  let body = content().parse_json()
+                  root.city    = $body.places.index(0).get("place name")
+                  root.state   = $body.places.index(0).get("state")
+                  root.country = $body.country
+            result_map: 'root.location = this'
+
+    - catch:
+        - mapping: |
+            root.original  = content().string()
+            root.error     = error()
+            root.failed_at = now()
+            meta dlq       = "true"
+
+# ---- tumbling window aggregation (only on the happy path) ----
+buffer:
+  system_window:
+    timestamp_mapping: 'root = now()'
+    size:  10s
+    slack: 1s
+
+# After the window opens, group by customer and roll up.
+# Note: any errored messages still flow through the buffer; we route them
+# at the output boundary below.
+output:
+  switch:
+    cases:
+
+      # DLQ branch — fan out errored events to topic + file.
+      - check: errored() || meta("dlq") == "true"
+        output:
+          broker:
+            pattern: fan_out
+            outputs:
+              - kafka_franz:
+                  seed_brokers: [ "${WARPSTREAM_BROKER:localhost:9092}" ]
+                  topic:        "${DLQ_TOPIC:orders.dlq}"
+              - file:
+                  path:  ./examples/12-end-to-end-pipeline/out/dlq.jsonl
+                  codec: lines
+
+      # Happy path — re-batch by customer, archive into a single rollup,
+      # then fan out to the rollup topic and a local file.
+      - processors:
+          - group_by_value:
+              value: ${! this.customer_id }
+          - archive:
+              format: json_array
+          - mapping: |
+              root.window_end   = now()
+              root.customer_id  = this.index(0).customer_id
+              root.order_count  = this.length()
+              root.total_amount = this.map_each(o -> o.total).sum()
+              root.cities       = this.map_each(o -> o.location.city).unique()
+              meta kafka_key    = root.customer_id
+        output:
+          broker:
+            pattern: fan_out
+            outputs:
+              - kafka_franz:
+                  seed_brokers: [ "${WARPSTREAM_BROKER:localhost:9092}" ]
+                  topic:        "${OUT_TOPIC:orders.rollup}"
+                  key:          ${! meta("kafka_key") }
+              - file:
+                  path:  ./examples/12-end-to-end-pipeline/out/rollups.jsonl
+                  codec: lines
+
+metrics:
+  prometheus: {}
+
+logger:
+  level:  INFO
+  format: json

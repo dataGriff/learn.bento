@@ -1,0 +1,35 @@
+# Bento as a small HTTP service:
+#   POST /post  ->  process  ->  reply synchronously AND log to stdout.
+#
+# We use a `broker` (fan_out) output so the same message is delivered to
+# both `sync_response` (the HTTP caller) and `stdout` (server log).
+
+http:
+  address: 0.0.0.0:4195
+
+input:
+  http_server:
+    address: ""              # share the global http server above
+    path: /post
+    allowed_verbs: [POST]
+    timeout: 5s
+
+pipeline:
+  processors:
+    # Tag the message with a request id we control.
+    - mapping: |
+        meta request_id = uuid_v4()
+
+    # Build the response payload.
+    - mapping: |
+        root.ok             = true
+        root.received_user  = this.user.or("anonymous")
+        root.received_event = this.event.or("unknown")
+        root.request_id     = meta("request_id")
+
+output:
+  broker:
+    pattern: fan_out
+    outputs:
+      - sync_response: {}    # answer the HTTP caller
+      - stdout: {}           # server-side log

@@ -1,0 +1,3 @@
+{"order_id":"o-1","qty":1,"items":[{"qty":2,"price":15},{"qty":1,"price":5}]}
+{"order_id":"o-2","qty":0,"items":[]}
+{"order_id":"o-3","qty":2,"items":[{"qty":1,"price":75}]}

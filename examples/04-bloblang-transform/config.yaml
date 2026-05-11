@@ -1,0 +1,51 @@
+# A more realistic Bloblang transform showing:
+#   - safe field access with `.or(default)`
+#   - array reduction (`map_each` + `sum`)
+#   - conditional expressions (`if` and `match`)
+#   - metadata for downstream routing
+#   - filtering with `deleted()`
+
+input:
+  file:
+    paths:
+      - ./examples/04-bloblang-transform/data/events.jsonl
+    codec: lines
+
+pipeline:
+  processors:
+    - mapping: |
+        # Drop messages that have no items.
+        root = if this.items.length() == 0 { deleted() } else { this }
+
+    - mapping: |
+        # Identity-copy then mutate.
+        root = this
+
+        # Safe nested access: customer.email may be missing.
+        root.customer.email = this.customer.email.or("unknown@example.com").lowercase()
+
+        # Recompute the order total from items.
+        root.total = this.items.map_each(item -> item.qty * item.price).sum()
+
+        # Tier the customer by spend.
+        root.tier = match {
+          root.total >= 200 => "gold",
+          root.total >= 50  => "silver",
+          _                 => "bronze",
+        }
+
+        # Derived boolean.
+        root.is_high_value = root.tier == "gold"
+
+        # Stamp processing metadata.
+        root.processed_at = now()
+
+        # Set message metadata for downstream routing
+        # (you can read this in `output.switch.cases[].check`).
+        meta routing_key = root.tier
+        meta event_type  = "order.normalised"
+
+output:
+  file:
+    path:  ./examples/04-bloblang-transform/out/events.jsonl
+    codec: lines

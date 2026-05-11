@@ -1,0 +1,31 @@
+# Generate synthetic order events and produce them to a WarpStream topic.
+# WarpStream speaks the Kafka protocol so the `kafka_franz` output works
+# unchanged whether you point it at WarpStream, Redpanda, or Apache Kafka.
+
+input:
+  generate:
+    interval: 1s
+    mapping: |
+      let customers = ["alice","bob","carol","dave","erin"]
+      let skus      = ["A","B","C","D"]
+      root.order_id    = uuid_v4()
+      root.customer_id = $customers.index(random_int(min:0, max:4))
+      root.sku         = $skus.index(random_int(min:0, max:3))
+      root.qty         = random_int(min:1, max:5)
+      root.price       = random_int(min:5, max:200)
+      root.created_at  = now()
+
+pipeline:
+  processors:
+    # The Kafka key controls partitioning. Same customer => same partition.
+    - mapping: |
+        meta kafka_key = this.customer_id
+
+output:
+  kafka_franz:
+    seed_brokers: [ "${WARPSTREAM_BROKER:localhost:9092}" ]
+    topic:        "${TOPIC:orders}"
+    # Read the partitioning key from the metadata field set above.
+    key:          ${! meta("kafka_key") }
+    compression:  zstd
+    timeout:      5s

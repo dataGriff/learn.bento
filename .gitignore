@@ -1,0 +1,16 @@
+# Generated outputs from each example.
+examples/*/out/
+
+# Editor noise
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Bento debug profiles
+*.pprof
+
+# Local override files
+.env
+.env.local
+docker-compose.override.yml

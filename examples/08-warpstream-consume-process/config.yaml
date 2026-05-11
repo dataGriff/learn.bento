@@ -1,0 +1,43 @@
+# Consume orders from WarpStream, compute totals and tiers, produce to
+# `orders.enriched`. Demonstrates consumer groups, at-least-once delivery,
+# and reading Kafka metadata fields.
+
+input:
+  kafka_franz:
+    seed_brokers:      [ "${WARPSTREAM_BROKER:localhost:9092}" ]
+    topics:            [ "${IN_TOPIC:orders}" ]
+    consumer_group:    "${GROUP:bento-orders-enricher}"
+    start_from_oldest: true
+    auto_replay_nacks: true
+
+pipeline:
+  processors:
+    - mapping: |
+        # Compute derived fields.
+        let total = this.qty * this.price
+        root           = this
+        root.total     = $total
+        root.tier      = match {
+          $total >= 200 => "gold",
+          $total >= 50  => "silver",
+          _             => "bronze",
+        }
+
+        # Preserve the source coordinates for audit / replay.
+        root.source = {
+          "topic":     meta("kafka_topic"),
+          "partition": meta("kafka_partition").number(),
+          "offset":    meta("kafka_offset").number(),
+        }
+        root.processed_at = now()
+
+        # Preserve the Kafka key so the same customer keeps the same partition
+        # on the output topic.
+        meta kafka_key = meta("kafka_key")
+
+output:
+  kafka_franz:
+    seed_brokers: [ "${WARPSTREAM_BROKER:localhost:9092}" ]
+    topic:        "${OUT_TOPIC:orders.enriched}"
+    key:          ${! meta("kafka_key") }
+    compression:  zstd

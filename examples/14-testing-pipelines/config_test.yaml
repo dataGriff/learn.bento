@@ -1,0 +1,35 @@
+# Unit tests for ./config.yaml — run with:
+#   bento test examples/14-testing-pipelines/config.yaml
+
+tests:
+
+  - name: happy path
+    target_processors: '0-2'    # run validate, drop-empty, enrich
+    input_batch:
+      - content: |
+          {"order_id":"o-1","qty":1,"items":[{"qty":2,"price":15},{"qty":1,"price":5}]}
+    output_batches:
+      -
+        - json_equals:
+            order_id: "o-1"
+            qty:      1
+            items:
+              - { qty: 2, price: 15 }
+              - { qty: 1, price: 5 }
+            total:    35
+            tier:     "silver"
+
+  - name: drops empty items
+    target_processors: '0-2'
+    input_batch:
+      - content: '{"order_id":"o-2","qty":0,"items":[]}'
+    # Expect zero output messages — the message is `deleted()` in step 1.
+    output_batches: []
+
+  - name: flags negative qty as error
+    target_processors: '0'      # only the validation step
+    input_batch:
+      - content: '{"order_id":"o-3","qty":-1,"items":[{"qty":1,"price":5}]}'
+    output_batches:
+      -
+        - error_contains: 'qty must be >= 0'

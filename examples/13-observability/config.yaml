@@ -1,0 +1,68 @@
+# Show the three observability surfaces:
+#   1) Prometheus metrics at /metrics  (built-in + custom counters)
+#   2) Structured JSON logs            (logger + log processor)
+#   3) OTLP traces                     (tracer.open_telemetry_collector)
+
+http:
+  address: 0.0.0.0:4197
+
+input:
+  generate:
+    interval: 250ms
+    mapping: |
+      let tiers = ["gold","silver","bronze"]
+      root.order_id = uuid_v4()
+      root.amount   = random_int(min:1, max:300)
+      root.tier     = $tiers.index(random_int(min:0, max:2))
+
+pipeline:
+  processors:
+
+    # Custom counter, labelled by tier (low cardinality — safe for Prom).
+    - metric:
+        type:  counter
+        name:  orders_processed
+        labels:
+          tier: ${! this.tier }
+        value: "1"
+
+    # Custom timing — useful when you wrap an enrichment HTTP call.
+    - mapping: 'meta start_ns = timestamp_unix_nano()'
+    - sleep:
+        duration: 50ms     # simulate work
+    - metric:
+        type:  timing
+        name:  fake_work_ns
+        value: ${! timestamp_unix_nano() - meta("start_ns").number() }
+
+    # Per-message structured log line.
+    - log:
+        level:   INFO
+        message: "processed order"
+        fields_mapping: |
+          root.order_id = this.order_id
+          root.tier     = this.tier
+          root.amount   = this.amount
+
+output:
+  drop: {}      # we only care about the metrics/logs in this example
+
+metrics:
+  prometheus:
+    use_histogram_timing: true
+
+tracer:
+  open_telemetry_collector:
+    http:
+      - url: http://localhost:4318     # default OTLP/HTTP port
+    grpc: []
+    tags:
+      service: bento-tutorial
+
+logger:
+  level:         INFO
+  format:        json
+  add_timestamp: true
+  static_fields:
+    service: bento-tutorial
+    env:     local
