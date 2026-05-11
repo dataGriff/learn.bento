@@ -1,0 +1,17 @@
+# The smallest useful Bento pipeline:
+#   generate ----> stdout
+#
+# Every second the `generate` input synthesises a message whose payload
+# is the JSON object built by the Bloblang mapping. The default output
+# codec for `stdout` is `lines`, so each message becomes one line of
+# JSON on your terminal.
+
+input:
+  generate:
+    interval: 1s
+    mapping: |
+      root.greeting = "hello world"
+      root.ts       = now()
+
+output:
+  stdout: {}

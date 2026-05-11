@@ -1,0 +1,39 @@
+# A small, testable pipeline. Tests live in `config_test.yaml` next to it.
+#
+# We deliberately keep the input/output to file so that running `bento -c`
+# also works as a smoke test, while `bento test` exercises the pipeline
+# in isolation.
+
+input:
+  file:
+    paths:
+      - ./examples/14-testing-pipelines/data/in.jsonl
+    codec: lines
+
+pipeline:
+  processors:
+    # 0: validate
+    - mapping: |
+        if this.qty == null || this.qty < 0 {
+          throw("qty must be >= 0")
+        }
+        root = this
+
+    # 1: drop empty-items orders
+    - mapping: |
+        root = if this.items == null || this.items.length() == 0 { deleted() } else { this }
+
+    # 2: enrich with total + tier
+    - mapping: |
+        root        = this
+        root.total  = this.items.map_each(i -> i.qty * i.price).sum()
+        root.tier   = match {
+          root.total >= 100 => "gold",
+          root.total >= 25  => "silver",
+          _                 => "bronze",
+        }
+
+output:
+  file:
+    path:  ./examples/14-testing-pipelines/out/out.jsonl
+    codec: lines

@@ -1,0 +1,51 @@
+# Local infrastructure for the learn.bento tutorial.
+#
+#   warpstream    — single-node WarpStream agent in playground mode (no AWS),
+#                   exposes Kafka API on localhost:9092
+#   kafka-tools   — small image with `rpk` for creating topics / poking the broker
+#   bento         — the bento binary in a container, used by `make ex*` so you
+#                   don't have to install bento locally
+#
+# Bring everything up:    make warpstream-up
+# Tear down:              make warpstream-down
+
+services:
+
+  warpstream:
+    image: public.ecr.aws/warpstream-labs/warpstream_agent:latest
+    container_name: bento-warpstream
+    command:
+      - playground
+    ports:
+      - "9092:9092"      # Kafka API
+      - "8080:8080"      # Admin / health
+    healthcheck:
+      test: ["CMD", "/warpstream", "kcmd", "--bootstrap-host", "localhost", "describe-cluster"]
+      interval: 5s
+      timeout:  3s
+      retries:  20
+
+  kafka-tools:
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    container_name: bento-kafka-tools
+    entrypoint: ["/bin/sleep", "infinity"]
+    depends_on:
+      warpstream:
+        condition: service_healthy
+
+  # A persistent bento container you can exec into. The Makefile uses
+  # `docker compose run --rm bento -c <cfg>` for one-off pipeline runs.
+  bento:
+    image: ghcr.io/warpstreamlabs/bento:latest
+    container_name: bento-runner
+    profiles: ["never"]   # don't start by default, only via `docker compose run`
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+    environment:
+      - WARPSTREAM_BROKER=warpstream:9092
+    depends_on:
+      warpstream:
+        condition: service_healthy
+    networks:
+      - default
