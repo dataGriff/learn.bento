@@ -73,6 +73,40 @@ For production-like, always-on streaming consumers, expect to pay at least a sma
 
 ---
 
+## Free PaaS and non-container hosting FAQ
+
+### Are there free PaaS options?
+
+Yes. You can often start on free tiers from platforms like Render/Railway/Fly-style services, but plan limits change frequently. Check for:
+- sleep/scale-to-zero behavior,
+- monthly runtime caps,
+- bandwidth/egress limits,
+- CPU/RAM ceilings.
+
+Free tiers are usually fine for demos, webhook endpoints with light traffic, and short-lived learning projects.
+
+### Does Bento have to run in a container?
+
+No. Container is the easiest packaging model, but Bento can run as a regular binary too.
+
+Non-container options:
+- Linux VM + `systemd` running `bento -c /path/config.yaml`
+- A home server or bare-metal host
+- Scheduled batch execution via cron (for non-continuous jobs)
+
+### What about serverless functions?
+
+Possible, but usually not the best fit for always-on streaming pipelines.
+
+Why:
+- function time limits can interrupt long-running consumers,
+- cold starts add latency,
+- connection-heavy stream workloads (Kafka/WarpStream) are better on long-lived processes.
+
+Serverless can still work for short request/response transformations or scheduled micro-batches. For continuous stream processing, prefer VM/container/Kubernetes deployment models.
+
+---
+
 ## Hands-on walkthrough: deploy a hosted Bento endpoint
 
 This walkthrough gives you a concrete outcome: a public HTTP endpoint running Bento.
