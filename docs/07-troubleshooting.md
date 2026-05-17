@@ -148,3 +148,5 @@ Useful for measuring throughput / processor cost.
 - The official docs are excellent: <https://warpstreamlabs.github.io/bento/>
 - Bento Discord (linked from the docs) is responsive.
 - `bento list processors --format full` is the comprehensive offline reference.
+
+Continue → [08 — Hosting Bento solutions](08-hosting-bento-solutions.md)

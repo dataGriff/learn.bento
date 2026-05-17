@@ -69,6 +69,7 @@ examples/NN-name/
 | 05 | [Bloblang cheat-sheet](docs/05-bloblang-cheatsheet.md) | The mapping language you will live and breathe |
 | 06 | [WarpStream setup](docs/06-warpstream-setup.md) | Running a local WarpStream agent and connecting Bento |
 | 07 | [Troubleshooting](docs/07-troubleshooting.md) | Common pitfalls and how to debug a pipeline |
+| 08 | [Hosting Bento solutions](docs/08-hosting-bento-solutions.md) | Deployment options, trade-offs, and realistic free-tier paths |
 
 ---
 
