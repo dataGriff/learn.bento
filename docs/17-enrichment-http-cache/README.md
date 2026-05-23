@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/17-enrichment-http-cach
 
 > **Goal:** look up extra fields from an external service for each event, but **cache the result** so we don't hammer the API.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 

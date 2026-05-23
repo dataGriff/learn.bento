@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/07-file-to-file
 
 > **Goal:** read a CSV, transform each row, write structured JSON.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 

@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/15-error-handling-dlq
 
 > **Goal:** isolate failure, retry transient errors, route permanently-broken messages to a dead-letter queue (DLQ).
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 

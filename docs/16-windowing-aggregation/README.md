@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/16-windowing-aggregatio
 
 > **Goal:** group events into fixed time windows and emit one rolled-up message per window — the basic primitive for "events per minute" dashboards.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 

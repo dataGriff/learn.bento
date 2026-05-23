@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/08-http-server-input
 
 > **Goal:** turn Bento into a tiny HTTP service that ingests events and returns a synchronous response.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 

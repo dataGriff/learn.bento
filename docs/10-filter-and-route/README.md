@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/10-filter-and-route
 
 > **Goal:** content-based routing — same input, different destinations depending on the message.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 

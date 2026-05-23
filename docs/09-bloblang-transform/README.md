@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/09-bloblang-transform
 
 > **Goal:** see Bloblang earn its keep on a realistic event shape — conditionals, type coercion, array operations, metadata, error handling.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 

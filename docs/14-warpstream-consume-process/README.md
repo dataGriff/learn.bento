@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/14-warpstream-consume-p
 
 > **Goal:** consume from one WarpStream topic, transform, write back to another topic — the canonical "stream processor" shape.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 

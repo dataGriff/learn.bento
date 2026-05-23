@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/20-testing-pipelines
 
 > **Goal:** unit-test your YAML. `bento test` runs assertions against a config without ever needing a real input or output.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 

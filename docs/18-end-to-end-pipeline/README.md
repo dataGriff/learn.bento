@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/18-end-to-end-pipeline
 
 > **Goal:** combine everything — consume from WarpStream, enrich, validate, aggregate by window, fan out to multiple sinks (one of which is another WarpStream topic), with full DLQ handling.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 
@@ -18,12 +18,12 @@ canonical_url: https://hungovercoders.com/training/bento/18-end-to-end-pipeline
 
 | Capability | From lesson |
 |---|---|
-| WarpStream consume | [14 — WarpStream Consume and Process](14-warpstream-consume-process.md) |
-| HTTP + cache enrichment | [17 — Enrichment with HTTP and Cache](17-enrichment-http-cache.md) |
-| `try` / `catch` / DLQ routing | [15 — Error Handling and DLQ](15-error-handling-dlq.md) |
-| Tumbling windows + aggregation | [16 — Windowing and Aggregation](16-windowing-aggregation.md) |
-| Fan-out to multiple sinks | [11 — Fan-out Broker](11-fan-out-broker.md) |
-| Bloblang transforms throughout | [09 — Bloblang Transform](09-bloblang-transform.md) |
+| WarpStream consume | [14 — WarpStream Consume and Process](../14-warpstream-consume-process/) |
+| HTTP + cache enrichment | [17 — Enrichment with HTTP and Cache](../17-enrichment-http-cache/) |
+| `try` / `catch` / DLQ routing | [15 — Error Handling and DLQ](../15-error-handling-dlq/) |
+| Tumbling windows + aggregation | [16 — Windowing and Aggregation](../16-windowing-aggregation/) |
+| Fan-out to multiple sinks | [11 — Fan-out Broker](../11-fan-out-broker/) |
+| Bloblang transforms throughout | [09 — Bloblang Transform](../09-bloblang-transform/) |
 
 ---
 

@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/11-fan-out-broker
 
 > **Goal:** deliver every message to *multiple* destinations — the classic "tap a stream" pattern.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 

@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/03-hello-world
 
 > **Goal:** prove Bento works on your machine. The smallest possible pipeline.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 

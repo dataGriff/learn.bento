@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/13-warpstream-produce
 
 > **Goal:** generate synthetic events and produce them to a WarpStream topic using the Kafka protocol.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 

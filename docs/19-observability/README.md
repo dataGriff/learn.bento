@@ -10,7 +10,7 @@ canonical_url: https://hungovercoders.com/training/bento/19-observability
 
 > **Goal:** make a pipeline visible — Prometheus metrics, structured logs, distributed traces.
 
-**Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
+**Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 
