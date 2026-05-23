@@ -41,6 +41,6 @@ canonical_url: https://hungovercoders.com/training/bento/NN-slug
 
 **YAML configs** use 2-space indentation. No tabs.
 
-**Config file paths** use portable relative paths (`./data/orders.csv`, `./out/orders.jsonl`). All paths are relative to the lesson directory — run `bento -c config.yaml` from within the lesson folder, or use `make exNN` which cds in automatically.
+**Config file paths** use portable relative paths (`./data/orders.csv`, `./out/orders.jsonl`). All paths are relative to the lesson directory — run `bento -c config.yaml` from within the lesson folder.
 
 **Do not add placeholder values** to configs. Every config must run as-is (`bento -c config.yaml` from the lesson directory) without editing.

@@ -1,12 +1,12 @@
 ---
 title: "Configuration Anatomy"
 series: bento
-order: 5
+order: 6
 description: "Environment variable interpolation, Bloblang expressions, config file splitting, linting, and streams mode."
 canonical_url: https://hungovercoders.com/training/bento/05-configuration-anatomy
 ---
 
-# 05 — Configuration Anatomy
+# 06 — Configuration Anatomy
 
 A Bento config is YAML. There are a few quality-of-life features beyond plain
 YAML that you should know about before reading the examples.

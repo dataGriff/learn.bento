@@ -1,12 +1,12 @@
 ---
 title: "Observability"
 series: bento
-order: 19
+order: 20
 description: "Make a pipeline visible — Prometheus metrics, structured JSON logs, and distributed OTLP traces."
 canonical_url: https://hungovercoders.com/training/bento/19-observability
 ---
 
-# 19 — Observability
+# 20 — Observability
 
 > **Goal:** make a pipeline visible — Prometheus metrics, structured logs, distributed traces.
 
@@ -108,7 +108,8 @@ logger:
 ## Run it
 
 ```bash
-make ex13
+cd docs/19-observability
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`

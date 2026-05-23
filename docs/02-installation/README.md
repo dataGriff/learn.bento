@@ -51,7 +51,7 @@ docker run --rm -v "$PWD/docs/03-hello-world:/cfg" \
   -c /cfg/config.yaml
 ```
 
-The `Makefile` wraps this so you can simply run `make ex01` and not memorize the Docker command.
+To follow along with the hands-on lessons, see [03 — Tutorial Setup](../03-tutorial-setup/).
 
 ---
 

@@ -10,13 +10,13 @@ Read the full tutorial: **[hungovercoders.com/training/bento](https://hungoverco
 
 ```
 learn.bento/
-└── docs/                          # 21 lessons in tutorial order
+└── docs/                          # 22 lessons in tutorial order
     ├── 01-what-is-bento/
     │   └── README.md              # concept lesson — prose only
-    ├── 03-hello-world/
+    ├── 04-hello-world/
     │   ├── README.md              # lesson content
     │   └── config.yaml            # runnable Bento config
-    ├── 07-file-to-file/
+    ├── 08-file-to-file/
     │   ├── README.md
     │   ├── config.yaml
     │   └── data/orders.csv        # sample input data
@@ -30,28 +30,27 @@ Each lesson directory contains `README.md` (the full lesson, rendered on the sit
 ## Prerequisites
 
 - **Bento** ≥ `v1.4.0` — install instructions in [docs/02-installation](docs/02-installation/README.md)
-- **Docker** + **Docker Compose** — required for WarpStream examples (lessons 13–18)
-- **`curl`** + **`jq`** — for the HTTP server example (lesson 08)
-- **`make`** — optional convenience wrapper; all examples can also be run directly with `bento -c`
+- **Docker** + **Docker Compose** — required for WarpStream examples (lessons 13–19)
+- **`curl`** + **`jq`** — for the HTTP server example (lesson 09)
 
 ---
 
 ## Running the examples
 
-Clone this repo, then use `make` or run directly from the lesson directory:
+Clone or fork the repo, then run any lesson directly from its directory:
 
 ```bash
 git clone https://github.com/hungovercoders/learn.bento.git
 cd learn.bento
 
-# Run lesson 03 — hello world
-make ex01
-# or run directly:
-cd docs/03-hello-world && bento -c config.yaml
+# Run lesson 04 — hello world
+cd docs/04-hello-world
+bento -c config.yaml
 
-# Bring up a local WarpStream agent (needed for lessons 13–18)
-make warpstream-up
-make ex07   # produce to WarpStream
+# Bring up a local WarpStream agent (needed for lessons 13–19)
+docker compose up -d warpstream kafka-tools
+cd docs/14-warpstream-produce
+bento -c config.yaml
 ```
 
 ---

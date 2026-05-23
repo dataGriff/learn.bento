@@ -1,12 +1,12 @@
 ---
 title: "Bloblang Transform"
 series: bento
-order: 9
+order: 10
 description: "A realistic Bloblang exercise — conditionals, type coercion, array operations, metadata, and safe access."
 canonical_url: https://hungovercoders.com/training/bento/09-bloblang-transform
 ---
 
-# 09 — Bloblang Transform
+# 10 — Bloblang Transform
 
 > **Goal:** see Bloblang earn its keep on a realistic event shape — conditionals, type coercion, array operations, metadata, error handling.
 
@@ -82,7 +82,8 @@ output:
 ## Run it
 
 ```bash
-make ex04
+cd docs/09-bloblang-transform
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`

@@ -1,12 +1,12 @@
 ---
 title: "Error Handling and DLQ"
 series: bento
-order: 15
+order: 16
 description: "Isolate failure, retry transient errors, and route permanently broken messages to a dead-letter queue."
 canonical_url: https://hungovercoders.com/training/bento/15-error-handling-dlq
 ---
 
-# 15 — Error Handling and DLQ
+# 16 — Error Handling and DLQ
 
 > **Goal:** isolate failure, retry transient errors, route permanently-broken messages to a dead-letter queue (DLQ).
 
@@ -98,7 +98,8 @@ output:
 ## Run it
 
 ```bash
-make ex09
+cd docs/15-error-handling-dlq
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`

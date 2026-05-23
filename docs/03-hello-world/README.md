@@ -1,12 +1,12 @@
 ---
 title: "Hello World"
 series: bento
-order: 3
+order: 4
 description: "The smallest possible Bento pipeline — generate a message and print it."
 canonical_url: https://hungovercoders.com/training/bento/03-hello-world
 ---
 
-# 03 — Hello World
+# 04 — Hello World
 
 > **Goal:** prove Bento works on your machine. The smallest possible pipeline.
 
@@ -54,7 +54,7 @@ Save the config above as `config.yaml`, then:
 bento -c config.yaml
 ```
 
-Or clone the repo and run `make ex01`: `git clone https://github.com/hungovercoders/learn.bento.git`
+Or clone the repo and run from the lesson directory — see [03 — Tutorial Setup](../03-tutorial-setup/).
 
 You should see one JSON line per second:
 

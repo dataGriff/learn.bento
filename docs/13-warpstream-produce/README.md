@@ -1,12 +1,12 @@
 ---
 title: "WarpStream Produce"
 series: bento
-order: 13
+order: 14
 description: "Generate synthetic events and produce them to a WarpStream topic using the Kafka protocol."
 canonical_url: https://hungovercoders.com/training/bento/13-warpstream-produce
 ---
 
-# 13 — WarpStream Produce
+# 14 — WarpStream Produce
 
 > **Goal:** generate synthetic events and produce them to a WarpStream topic using the Kafka protocol.
 
@@ -72,8 +72,8 @@ output:
 Bring up the local WarpStream agent and create the topic:
 
 ```bash
-make warpstream-up
-make ws-topic NAME=orders PARTITIONS=3
+docker compose up -d warpstream kafka-tools
+docker compose exec kafka-tools rpk topic create orders --partitions 3 --brokers warpstream:9092
 ```
 
 ---
@@ -81,7 +81,8 @@ make ws-topic NAME=orders PARTITIONS=3
 ## Run it
 
 ```bash
-make ex07
+cd docs/13-warpstream-produce
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
@@ -89,7 +90,7 @@ make ex07
 Verify the topic is filling up:
 
 ```bash
-make ws-consume TOPIC=orders
+docker compose exec kafka-tools rpk topic consume orders --brokers warpstream:9092
 # Ctrl-C to stop
 ```
 

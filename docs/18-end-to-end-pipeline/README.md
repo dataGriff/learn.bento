@@ -1,12 +1,12 @@
 ---
 title: "End-to-end Pipeline"
 series: bento
-order: 18
+order: 19
 description: "Combine WarpStream consume, HTTP enrichment, windowed aggregation, fan-out, and DLQ routing into one production-grade pipeline."
 canonical_url: https://hungovercoders.com/training/bento/18-end-to-end-pipeline
 ---
 
-# 18 — End-to-end Pipeline
+# 19 — End-to-end Pipeline
 
 > **Goal:** combine everything — consume from WarpStream, enrich, validate, aggregate by window, fan out to multiple sinks (one of which is another WarpStream topic), with full DLQ handling.
 
@@ -182,16 +182,17 @@ The new idea here is **layering**: an enrichment branch inside a `try`, inside a
 ## Prerequisites
 
 ```bash
-make warpstream-up
-make ws-topic NAME=orders        PARTITIONS=3
-make ws-topic NAME=orders.dlq    PARTITIONS=1
-make ws-topic NAME=orders.rollup PARTITIONS=3
+docker compose up -d warpstream kafka-tools
+docker compose exec kafka-tools rpk topic create orders --partitions 3 --brokers warpstream:9092
+docker compose exec kafka-tools rpk topic create orders.dlq --partitions 1 --brokers warpstream:9092
+docker compose exec kafka-tools rpk topic create orders.rollup --partitions 3 --brokers warpstream:9092
 ```
 
 Then start the producer in another terminal:
 
 ```bash
-make ex07
+cd docs/13-warpstream-produce
+bento -c config.yaml
 ```
 
 ---
@@ -199,7 +200,8 @@ make ex07
 ## Run it
 
 ```bash
-make ex12
+cd docs/18-end-to-end-pipeline
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
@@ -207,7 +209,7 @@ make ex12
 Watch the output topic:
 
 ```bash
-make ws-consume TOPIC=orders.rollup
+docker compose exec kafka-tools rpk topic consume orders.rollup --brokers warpstream:9092
 ```
 
 And the local files:

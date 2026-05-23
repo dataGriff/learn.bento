@@ -1,12 +1,12 @@
 ---
 title: "Filter and Route"
 series: bento
-order: 10
+order: 11
 description: "Content-based routing — same input, different destinations depending on the message."
 canonical_url: https://hungovercoders.com/training/bento/10-filter-and-route
 ---
 
-# 10 — Filter and Route
+# 11 — Filter and Route
 
 > **Goal:** content-based routing — same input, different destinations depending on the message.
 
@@ -87,7 +87,8 @@ The `check:` value in each case is a Bloblang expression returning a boolean. Yo
 ## Run it
 
 ```bash
-make ex05
+cd docs/10-filter-and-route
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`

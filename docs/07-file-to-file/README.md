@@ -1,12 +1,12 @@
 ---
 title: "File to File (CSV to JSON)"
 series: bento
-order: 7
+order: 8
 description: "Read a CSV, coerce types with Bloblang, and write structured JSON-Lines."
 canonical_url: https://hungovercoders.com/training/bento/07-file-to-file
 ---
 
-# 07 — File to File (CSV to JSON)
+# 08 — File to File (CSV to JSON)
 
 > **Goal:** read a CSV, transform each row, write structured JSON.
 
@@ -72,7 +72,8 @@ order_id,customer,amount,paid
 ## Run it
 
 ```bash
-make ex02
+cd docs/07-file-to-file
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`

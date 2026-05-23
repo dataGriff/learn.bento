@@ -1,12 +1,12 @@
 ---
 title: "Troubleshooting"
 series: bento
-order: 21
+order: 22
 description: "Solutions to the most common Bento problems: validation errors, missing messages, Bloblang issues, and connection failures."
 canonical_url: https://hungovercoders.com/training/bento/21-troubleshooting
 ---
 
-# 21 — Troubleshooting
+# 22 — Troubleshooting
 
 Things that will go wrong, in roughly the order you'll hit them.
 
@@ -76,7 +76,7 @@ Checklist:
 1. Is the agent running? `docker compose ps warpstream`
 2. Is the port published? `docker compose port warpstream 9092`
 3. Are you using `localhost:9092` from the host, but `warpstream:9092` from inside another container?
-4. Did the topic exist? `make ws-topics`
+4. Did the topic exist? `docker compose exec kafka-tools rpk topic list --brokers warpstream:9092`
 
 When in doubt, set Bento log level to `DEBUG` — the `kafka_franz` client logs every connect attempt.
 

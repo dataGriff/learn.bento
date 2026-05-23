@@ -1,12 +1,12 @@
 ---
 title: "Windowing and Aggregation"
 series: bento
-order: 16
+order: 17
 description: "Group events into fixed time windows and emit one rolled-up message per window."
 canonical_url: https://hungovercoders.com/training/bento/16-windowing-aggregation
 ---
 
-# 16 — Windowing and Aggregation
+# 17 — Windowing and Aggregation
 
 > **Goal:** group events into fixed time windows and emit one rolled-up message per window — the basic primitive for "events per minute" dashboards.
 
@@ -93,7 +93,8 @@ emit:                    [a,b,c,d]      [e,f,g]              [h,i]
 ## Run it
 
 ```bash
-make ex10
+cd docs/16-windowing-aggregation
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`

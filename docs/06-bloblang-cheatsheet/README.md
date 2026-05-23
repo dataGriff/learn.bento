@@ -1,12 +1,12 @@
 ---
 title: "Bloblang Cheat-Sheet"
 series: bento
-order: 6
+order: 7
 description: "The complete Bloblang quick reference: roots, metadata, functions, string and number methods, conditionals, and filtering."
 canonical_url: https://hungovercoders.com/training/bento/06-bloblang-cheatsheet
 ---
 
-# 06 — Bloblang Cheat-Sheet
+# 07 — Bloblang Cheat-Sheet
 
 [Bloblang](https://warpstreamlabs.github.io/bento/docs/guides/bloblang/about) is
 the assignment-based mapping language at the heart of Bento. You will write it

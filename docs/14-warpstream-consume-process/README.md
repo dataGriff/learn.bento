@@ -1,12 +1,12 @@
 ---
 title: "WarpStream Consume and Process"
 series: bento
-order: 14
+order: 15
 description: "Consume from one WarpStream topic, transform, and write back to another — the canonical stream processor shape."
 canonical_url: https://hungovercoders.com/training/bento/14-warpstream-consume-process
 ---
 
-# 14 — WarpStream Consume and Process
+# 15 — WarpStream Consume and Process
 
 > **Goal:** consume from one WarpStream topic, transform, write back to another topic — the canonical "stream processor" shape.
 
@@ -80,15 +80,16 @@ The `meta kafka_key = meta("kafka_key")` line propagates the original partition 
 ## Prerequisites
 
 ```bash
-make warpstream-up
-make ws-topic NAME=orders          PARTITIONS=3
-make ws-topic NAME=orders.enriched PARTITIONS=3
+docker compose up -d warpstream kafka-tools
+docker compose exec kafka-tools rpk topic create orders --partitions 3 --brokers warpstream:9092
+docker compose exec kafka-tools rpk topic create orders.enriched --partitions 3 --brokers warpstream:9092
 ```
 
-Then start the producer from lesson 13 in another terminal:
+Then start the producer from lesson 14 in another terminal:
 
 ```bash
-make ex07
+cd docs/13-warpstream-produce
+bento -c config.yaml
 ```
 
 ---
@@ -96,7 +97,8 @@ make ex07
 ## Run it
 
 ```bash
-make ex08
+cd docs/14-warpstream-consume-process
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
@@ -104,7 +106,7 @@ make ex08
 Watch the enriched output topic:
 
 ```bash
-make ws-consume TOPIC=orders.enriched
+docker compose exec kafka-tools rpk topic consume orders.enriched --brokers warpstream:9092
 ```
 
 You should see events like:

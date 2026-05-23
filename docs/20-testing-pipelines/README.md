@@ -1,12 +1,12 @@
 ---
 title: "Testing Pipelines"
 series: bento
-order: 20
+order: 21
 description: "Unit-test your YAML — bento test runs assertions against processor logic without any real input or output."
 canonical_url: https://hungovercoders.com/training/bento/20-testing-pipelines
 ---
 
-# 20 — Testing Pipelines
+# 21 — Testing Pipelines
 
 > **Goal:** unit-test your YAML. `bento test` runs assertions against a config without ever needing a real input or output.
 
@@ -122,7 +122,8 @@ The test file lives next to the config and is named `config_test.yaml`. Bento di
 ## Run it
 
 ```bash
-make ex14
+cd docs/20-testing-pipelines
+bento test config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`

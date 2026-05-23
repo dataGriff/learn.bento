@@ -1,12 +1,12 @@
 ---
 title: "Fan-out Broker"
 series: bento
-order: 11
+order: 12
 description: "Deliver every message to multiple destinations — the classic tap-a-stream pattern."
 canonical_url: https://hungovercoders.com/training/bento/11-fan-out-broker
 ---
 
-# 11 — Fan-out Broker
+# 12 — Fan-out Broker
 
 > **Goal:** deliver every message to *multiple* destinations — the classic "tap a stream" pattern.
 
@@ -90,7 +90,8 @@ The three branches here produce three different shapes from the same source even
 ## Run it
 
 ```bash
-make ex06
+cd docs/11-fan-out-broker
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`

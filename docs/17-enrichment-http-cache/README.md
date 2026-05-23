@@ -1,12 +1,12 @@
 ---
 title: "Enrichment with HTTP and Cache"
 series: bento
-order: 17
+order: 18
 description: "Look up extra fields from an external service per event, caching the result to avoid hammering the API."
 canonical_url: https://hungovercoders.com/training/bento/17-enrichment-http-cache
 ---
 
-# 17 — Enrichment with HTTP and Cache
+# 18 — Enrichment with HTTP and Cache
 
 > **Goal:** look up extra fields from an external service for each event, but **cache the result** so we don't hammer the API.
 
@@ -114,7 +114,8 @@ Inside the branch: the `cache` processor with `operator: get` attempts a cache l
 ## Run it
 
 ```bash
-make ex11
+cd docs/17-enrichment-http-cache
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`

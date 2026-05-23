@@ -1,12 +1,12 @@
 ---
 title: "WarpStream Setup"
 series: bento
-order: 12
+order: 13
 description: "Run a local WarpStream cluster with Docker Compose and connect Bento to it using the kafka_franz input and output."
 canonical_url: https://hungovercoders.com/training/bento/12-warpstream-setup
 ---
 
-# 12 — WarpStream Setup
+# 13 — WarpStream Setup
 
 [WarpStream](https://www.warpstream.com/) is a Kafka-protocol-compatible
 streaming platform that stores data directly in object storage (S3, GCS, etc.).
@@ -21,8 +21,7 @@ agent in **playground mode** — no AWS account, no S3 bucket, no auth required.
 ## Bring it up
 
 ```bash
-make warpstream-up
-# (or)  docker compose up -d warpstream
+docker compose up -d warpstream kafka-tools
 ```
 
 Then verify:
@@ -39,23 +38,16 @@ The agent now exposes a Kafka broker on **`localhost:9092`**.
 ## Create a topic
 
 The compose stack also includes `kafka-tools` (a tiny image with `rpk` /
-`kafka-topics.sh`). Use the helper:
+`kafka-topics.sh`):
 
 ```bash
-make ws-topic NAME=orders PARTITIONS=3
-```
-
-…or manually:
-
-```bash
-docker compose exec kafka-tools \
-  rpk topic create orders --partitions 3 --brokers warpstream:9092
+docker compose exec kafka-tools rpk topic create orders --partitions 3 --brokers warpstream:9092
 ```
 
 List topics:
 
 ```bash
-make ws-topics
+docker compose exec kafka-tools rpk topic list --brokers warpstream:9092
 ```
 
 ---
@@ -118,7 +110,7 @@ Everything else stays identical — the whole point of the Kafka-protocol surfac
 ## Tear down
 
 ```bash
-make warpstream-down
+docker compose down
 ```
 
 This stops the containers but preserves the volume. To also wipe data:
@@ -133,7 +125,7 @@ docker compose down -v
 
 ```bash
 # tail records on a topic
-make ws-consume TOPIC=orders
+docker compose exec kafka-tools rpk topic consume orders --brokers warpstream:9092
 
 # produce a one-off record from CLI
 echo '{"hello":"world"}' | docker compose exec -T kafka-tools \

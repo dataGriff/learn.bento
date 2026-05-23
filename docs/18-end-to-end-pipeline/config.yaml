@@ -3,8 +3,8 @@
 #                     -> fan-out (WarpStream:orders.rollup + file)
 #                     -> errored() routes to WarpStream:orders.dlq + file
 #
-# Run with:  make ex12
-# Pre-req:   make warpstream-up && make ws-topic NAME=orders ...
+# Run from: docs/18-end-to-end-pipeline — bento -c config.yaml
+# Pre-req:   docker compose up -d warpstream kafka-tools && create topics orders / orders.dlq / orders.rollup
 
 http:
   address: 0.0.0.0:4196     # admin/metrics on 4196 to avoid clash with example 03

@@ -1,12 +1,12 @@
 ---
 title: "HTTP Server Input"
 series: bento
-order: 8
+order: 9
 description: "Turn Bento into a tiny HTTP service that ingests events and returns a synchronous response."
 canonical_url: https://hungovercoders.com/training/bento/08-http-server-input
 ---
 
-# 08 — HTTP Server Input
+# 09 — HTTP Server Input
 
 > **Goal:** turn Bento into a tiny HTTP service that ingests events and returns a synchronous response.
 
@@ -70,7 +70,8 @@ output:
 ## Run it
 
 ```bash
-make ex03
+cd docs/08-http-server-input
+bento -c config.yaml
 ```
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
