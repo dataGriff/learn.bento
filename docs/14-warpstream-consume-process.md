@@ -12,7 +12,7 @@ canonical_url: https://hungovercoders.com/training/bento/14-warpstream-consume-p
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
 
-> If you have the repo cloned, you can run this example with `make ex08` or `bento -c examples/08-warpstream-consume-process/config.yaml`.
+> If you have the repo cloned: `make ex08`.
 > Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
 
 ---
@@ -100,8 +100,6 @@ make ex07
 
 ```bash
 make ex08
-# or, if running directly:
-bento -c examples/08-warpstream-consume-process/config.yaml
 ```
 
 Watch the enriched output topic:

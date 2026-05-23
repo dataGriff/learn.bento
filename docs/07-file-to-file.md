@@ -12,7 +12,7 @@ canonical_url: https://hungovercoders.com/training/bento/07-file-to-file
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned, you can run this example with `make ex02` or `bento -c examples/02-file-to-file/config.yaml`.
+> If you have the repo cloned: `make ex02`.
 > Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
 
 ---
@@ -76,8 +76,6 @@ order_id,customer,amount,paid
 
 ```bash
 make ex02
-# or, if running directly:
-bento -c examples/02-file-to-file/config.yaml
 ```
 
 Bento reads the CSV, transforms each row, then exits. Inspect the output:

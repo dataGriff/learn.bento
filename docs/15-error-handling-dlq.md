@@ -12,7 +12,7 @@ canonical_url: https://hungovercoders.com/training/bento/15-error-handling-dlq
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
 
-> If you have the repo cloned, you can run this example with `make ex09` or `bento -c examples/09-error-handling-dlq/config.yaml`.
+> If you have the repo cloned: `make ex09`.
 > Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
 
 ---
@@ -102,8 +102,6 @@ output:
 
 ```bash
 make ex09
-# or, if running directly:
-bento -c examples/09-error-handling-dlq/config.yaml
 ```
 
 Look at both output files:

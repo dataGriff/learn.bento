@@ -12,7 +12,7 @@ canonical_url: https://hungovercoders.com/training/bento/20-testing-pipelines
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned, you can run this example with `make ex14` or `bento test examples/14-testing-pipelines/config.yaml`.
+> If you have the repo cloned: `make ex14`.
 > Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
 
 ---
@@ -126,16 +126,14 @@ The test file lives next to the config and is named `config_test.yaml`. Bento di
 
 ```bash
 make ex14
-# or, if running directly:
-bento test examples/14-testing-pipelines/config.yaml
 ```
 
 You should see:
 
 ```
-Test 'happy path' [examples/14-testing-pipelines/config.yaml]: PASS
-Test 'drops empty items' [examples/14-testing-pipelines/config.yaml]: PASS
-Test 'flags negative qty as error' [examples/14-testing-pipelines/config.yaml]: PASS
+Test 'happy path': PASS
+Test 'drops empty items': PASS
+Test 'flags negative qty as error': PASS
 ```
 
 A failure prints a unified diff between expected and actual output.

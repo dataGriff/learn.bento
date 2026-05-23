@@ -13,6 +13,7 @@ canonical_url: https://hungovercoders.com/training/bento/03-hello-world
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
 > If you have the repo cloned: `make ex01`.
+> Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
 
 ---
 

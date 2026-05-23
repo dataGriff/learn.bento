@@ -12,7 +12,7 @@ canonical_url: https://hungovercoders.com/training/bento/11-fan-out-broker
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned, you can run this example with `make ex06` or `bento -c examples/06-fan-out-broker/config.yaml`.
+> If you have the repo cloned: `make ex06`.
 > Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
 
 ---
@@ -94,8 +94,6 @@ The three branches here produce three different shapes from the same source even
 
 ```bash
 make ex06
-# or, if running directly:
-bento -c examples/06-fan-out-broker/config.yaml
 ```
 
 Look at the outputs:

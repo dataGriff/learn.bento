@@ -12,7 +12,7 @@ canonical_url: https://hungovercoders.com/training/bento/16-windowing-aggregatio
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md). WarpStream running — see [12 — WarpStream Setup](12-warpstream-setup.md).
 
-> If you have the repo cloned, you can run this example with `make ex10` or `bento -c examples/10-windowing-aggregation/config.yaml`.
+> If you have the repo cloned: `make ex10`.
 > Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
 
 ---
@@ -97,8 +97,6 @@ emit:                    [a,b,c,d]      [e,f,g]              [h,i]
 
 ```bash
 make ex10
-# or, if running directly:
-bento -c examples/10-windowing-aggregation/config.yaml
 ```
 
 Tail the output for a few seconds:
