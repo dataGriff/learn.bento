@@ -12,9 +12,6 @@ canonical_url: https://hungovercoders.com/training/bento/08-http-server-input
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned: `make ex03`.
-> Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
-
 ---
 
 ## What this lesson covers
@@ -75,6 +72,8 @@ output:
 ```bash
 make ex03
 ```
+
+> Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
 
 In another terminal, POST a JSON event:
 

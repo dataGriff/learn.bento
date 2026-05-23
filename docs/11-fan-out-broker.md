@@ -12,9 +12,6 @@ canonical_url: https://hungovercoders.com/training/bento/11-fan-out-broker
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned: `make ex06`.
-> Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
-
 ---
 
 ## What this lesson covers
@@ -95,6 +92,8 @@ The three branches here produce three different shapes from the same source even
 ```bash
 make ex06
 ```
+
+> Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
 
 Look at the outputs:
 

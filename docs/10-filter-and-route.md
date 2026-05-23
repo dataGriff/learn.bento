@@ -12,9 +12,6 @@ canonical_url: https://hungovercoders.com/training/bento/10-filter-and-route
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned: `make ex05`.
-> Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
-
 ---
 
 ## What this lesson covers
@@ -92,6 +89,8 @@ The `check:` value in each case is a Bloblang expression returning a boolean. Yo
 ```bash
 make ex05
 ```
+
+> Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
 
 Three output files appear:
 

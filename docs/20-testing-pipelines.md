@@ -12,9 +12,6 @@ canonical_url: https://hungovercoders.com/training/bento/20-testing-pipelines
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned: `make ex14`.
-> Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
-
 ---
 
 ## What this lesson covers
@@ -127,6 +124,8 @@ The test file lives next to the config and is named `config_test.yaml`. Bento di
 ```bash
 make ex14
 ```
+
+> Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
 
 You should see:
 

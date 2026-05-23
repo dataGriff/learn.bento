@@ -12,9 +12,6 @@ canonical_url: https://hungovercoders.com/training/bento/09-bloblang-transform
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned: `make ex04`.
-> Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
-
 ---
 
 ## What this lesson covers
@@ -87,6 +84,8 @@ output:
 ```bash
 make ex04
 ```
+
+> Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
 
 Look at the output:
 
