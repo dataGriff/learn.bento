@@ -12,8 +12,7 @@ canonical_url: https://hungovercoders.com/training/bento/03-hello-world
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned, you can run this example with `make ex01` or `bento -c examples/01-hello-world/config.yaml`.
-> Clone: `git clone https://github.com/hungovercoders/learn.bento.git`
+> If you have the repo cloned: `make ex01` or `bento -c examples/01-hello-world/config.yaml`.
 
 ---
 
@@ -51,11 +50,13 @@ There are no `pipeline.processors` here — the message flows directly from inpu
 
 ## Run it
 
+Save the config above as `config.yaml`, then:
+
 ```bash
-make ex01
-# or, if running directly:
-bento -c examples/01-hello-world/config.yaml
+bento -c config.yaml
 ```
+
+Or if you have the repo cloned: `make ex01`.
 
 You should see one JSON line per second:
 
@@ -79,11 +80,11 @@ You should see one JSON line per second:
    ```
 3. Pipe the output through `jq`:
    ```bash
-   bento -c examples/01-hello-world/config.yaml | jq -c '.ts'
+   bento -c config.yaml | jq -c '.ts'
    ```
 4. Lint the config without running it:
    ```bash
-   bento lint examples/01-hello-world/config.yaml
+   bento lint config.yaml
    ```
 
 ---
