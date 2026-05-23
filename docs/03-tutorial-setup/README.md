@@ -8,17 +8,17 @@ canonical_url: https://hungovercoders.com/training/bento/03-tutorial-setup
 
 # 03 — Tutorial Setup
 
-Every hands-on lesson ships with a ready-to-run `config.yaml` and any sample data inside its directory. You do not need to write configs from scratch — they are there to study, modify, and run.
+The hands-on lessons in this series don't make you write configs from scratch. Each lesson directory ships with a ready-to-run `config.yaml` and any sample data it needs — you clone the repo, `cd` into a lesson, and run it. The configs are there to study, break, and modify. Crack on.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 
-## Fork then clone (recommended)
+## Fork it (recommended)
 
-Forking gives you your own copy on GitHub to save experiments and optionally contribute back.
+Forking gives you your own copy to experiment on, save your changes, and come back to later. If you spot something wrong in a lesson you can even send a pull request — always appreciated.
 
-1. Go to [github.com/hungovercoders/learn.bento](https://github.com/hungovercoders/learn.bento) and click **Fork**.
+1. Head to [github.com/hungovercoders/learn.bento](https://github.com/hungovercoders/learn.bento) and hit **Fork**.
 2. Clone your fork:
    ```bash
    git clone https://github.com/YOUR-USERNAME/learn.bento.git
@@ -27,9 +27,9 @@ Forking gives you your own copy on GitHub to save experiments and optionally con
 
 ---
 
-## Clone directly
+## Or just clone it
 
-Just want to run the examples without saving changes:
+No GitHub account, no ceremony:
 
 ```bash
 git clone https://github.com/hungovercoders/learn.bento.git
@@ -38,7 +38,7 @@ cd learn.bento
 
 ---
 
-## What you get
+## What's in the box
 
 ```
 learn.bento/
@@ -53,9 +53,11 @@ learn.bento/
     └── ...
 ```
 
-Each hands-on lesson directory contains `config.yaml` and any required data files. Run examples from inside the lesson directory:
+Every hands-on lesson lives in its own directory. To run any of them:
 
 ```bash
 cd docs/04-hello-world
 bento -c config.yaml
 ```
+
+Right — you're set up. On to the first pipeline, fellow hungovercoder.
