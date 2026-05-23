@@ -154,4 +154,3 @@ You'll see one trace per message with spans for each processor in the pipeline.
 
 A pipeline you can't measure is a pipeline you can't operate. The three pillars — metrics, logs, traces — are first-class in Bento. Turning them on takes 5 lines of YAML; no SDK changes, no agent sidecars, no framework wiring.
 
-Continue → [20 — Testing Pipelines](20-testing-pipelines.md)

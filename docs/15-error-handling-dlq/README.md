@@ -136,4 +136,3 @@ Bad messages land in the DLQ with their original payload, error message, and fai
 
 Failing safely is the difference between a pipeline that is "running" and one that is actually trustworthy. DLQ routing + idempotency are the two patterns you need for production readiness; this example shows both without any application code.
 
-Continue → [16 — Windowing and Aggregation](16-windowing-aggregation.md)

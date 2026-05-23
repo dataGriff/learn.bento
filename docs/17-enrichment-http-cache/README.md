@@ -150,4 +150,3 @@ Each event will have a `location` object with `city`, `state`, and `country`. On
 
 Cache-aside enrichment is one of the most common real-world Bento patterns. The `branch` + `cache` + `http` triad gives you Stripe-style customer lookup, GeoIP enrichment, currency conversion, feature-flag joins — all without an ORM, an HTTP framework, or a custom service.
 
-Continue → [18 — End-to-end Pipeline](18-end-to-end-pipeline.md)

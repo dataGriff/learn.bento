@@ -118,4 +118,3 @@ You'll see one synthetic order per second — keyed by `customer_id`, so all eve
 
 Producing to Kafka/WarpStream from anything that can shape a JSON object becomes a one-config-file exercise. No producer SDK to wrangle, no schema registry required (though `schema_registry_encode` is a first-class processor if you need it).
 
-Continue → [14 — WarpStream Consume and Process](14-warpstream-consume-process.md)

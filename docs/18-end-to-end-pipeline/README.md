@@ -225,4 +225,3 @@ tail -f ./out/dlq.jsonl
 2. Add a metrics + tracer block (see lesson 19) and scrape Prometheus.
 3. Add `bento test` cases (see lesson 20) for the validation step.
 
-Continue → [19 — Observability](19-observability.md)

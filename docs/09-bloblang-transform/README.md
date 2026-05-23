@@ -123,4 +123,3 @@ Then try mutating the config:
 
 Bloblang is the value Bento adds beyond plumbing. Everything in this example — type coercion, conditionals, derived fields, defaults, metadata — appears in every real pipeline. Get fluent here and the rest is downhill.
 
-Continue → [10 — Filter and Route](10-filter-and-route.md)

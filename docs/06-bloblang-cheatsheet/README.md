@@ -6,7 +6,7 @@ description: "The complete Bloblang quick reference: roots, metadata, functions,
 canonical_url: https://hungovercoders.com/training/bento/06-bloblang-cheatsheet
 ---
 
-# 05 — Bloblang cheat-sheet
+# 06 — Bloblang Cheat-Sheet
 
 [Bloblang](https://warpstreamlabs.github.io/bento/docs/guides/bloblang/about) is
 the assignment-based mapping language at the heart of Bento. You will write it
@@ -181,4 +181,3 @@ Output:
 
 ---
 
-Continue → [06 — WarpStream setup](06-warpstream-setup.md)

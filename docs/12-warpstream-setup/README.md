@@ -6,7 +6,7 @@ description: "Run a local WarpStream cluster with Docker Compose and connect Ben
 canonical_url: https://hungovercoders.com/training/bento/12-warpstream-setup
 ---
 
-# 06 — WarpStream setup
+# 12 — WarpStream Setup
 
 [WarpStream](https://www.warpstream.com/) is a Kafka-protocol-compatible
 streaming platform that stores data directly in object storage (S3, GCS, etc.).
@@ -142,4 +142,3 @@ echo '{"hello":"world"}' | docker compose exec -T kafka-tools \
 
 ---
 
-Continue → [07 — Troubleshooting](07-troubleshooting.md)

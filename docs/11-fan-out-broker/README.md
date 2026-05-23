@@ -134,4 +134,3 @@ By default, `fan_out` waits for **all** outputs to ack before acking upstream. A
 
 Fan-out is the answer to half of all "can we *also* send this to X?" requests. Auditing, mirroring to S3, dual-writing during migrations, dev/test sampling — all are one `broker` block away.
 
-Continue → [12 — WarpStream Setup](12-warpstream-setup.md)

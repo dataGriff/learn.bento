@@ -159,4 +159,3 @@ A failure prints a unified diff between expected and actual output.
 
 Streaming pipelines that change without tests are pipelines that silently start dropping or corrupting data. `bento test` is the single biggest reason to choose Bento over a hand-rolled stream service: your business logic is testable in isolation with no Kafka, no Docker, no fixture setup. A fast, zero-dependency test loop that runs in milliseconds.
 
-Continue → [21 — Troubleshooting](21-troubleshooting.md)

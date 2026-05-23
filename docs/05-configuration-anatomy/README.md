@@ -6,7 +6,7 @@ description: "Environment variable interpolation, Bloblang expressions, config f
 canonical_url: https://hungovercoders.com/training/bento/05-configuration-anatomy
 ---
 
-# 04 — Configuration anatomy
+# 05 — Configuration Anatomy
 
 A Bento config is YAML. There are a few quality-of-life features beyond plain
 YAML that you should know about before reading the examples.
@@ -118,4 +118,3 @@ Default address is `0.0.0.0:4195`. Override with `http.address`.
 
 ---
 
-Continue → [05 — Bloblang cheat-sheet](05-bloblang-cheatsheet.md)

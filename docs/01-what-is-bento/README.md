@@ -87,4 +87,3 @@ diverge — when in doubt, consult <https://warpstreamlabs.github.io/bento/>.
 - **Configs are lintable** — `bento lint` catches typos and shape errors.
 - **Configs are templatable** — env vars, secrets, Bloblang interpolation.
 
-Continue → [02 — Installation](02-installation.md)

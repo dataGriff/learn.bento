@@ -91,4 +91,3 @@ bento list processors --format full | less
 
 ---
 
-Continue → [03 — Core concepts](03-core-concepts.md)

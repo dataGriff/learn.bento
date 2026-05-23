@@ -6,7 +6,7 @@ description: "Solutions to the most common Bento problems: validation errors, mi
 canonical_url: https://hungovercoders.com/training/bento/21-troubleshooting
 ---
 
-# 07 — Troubleshooting
+# 21 — Troubleshooting
 
 Things that will go wrong, in roughly the order you'll hit them.
 

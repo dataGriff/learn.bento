@@ -91,4 +91,3 @@ You should see one JSON line per second:
 
 Every Bento pipeline — no matter how complex — is structurally identical to this one: **input → (processors) → output**. From here the only questions are: *which input? which processors? which output?*
 
-Continue → [04 — Core Concepts](04-core-concepts.md)

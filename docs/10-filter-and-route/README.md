@@ -126,4 +126,3 @@ You'll often use both together: a switch processor to mark or normalise per clas
 
 Real pipelines almost always need different code paths for different message shapes — orders vs refunds, success vs failure, customer vs admin. The switch primitives combined with Bloblang predicates handle 99% of routing requirements without needing a programming language.
 
-Continue → [11 — Fan-out Broker](11-fan-out-broker.md)

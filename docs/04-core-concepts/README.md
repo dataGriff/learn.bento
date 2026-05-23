@@ -6,7 +6,7 @@ description: "The eight words you need to read any Bento config: message, batch,
 canonical_url: https://hungovercoders.com/training/bento/04-core-concepts
 ---
 
-# 03 — Core concepts
+# 04 — Core Concepts
 
 Bento has a small, deliberate vocabulary. Once you internalise these eight
 words, every example in this repo (and almost every config you'll ever see)
@@ -177,4 +177,3 @@ logger:  { level: INFO, format: json }     # optional
 
 That's it. Every config you'll ever see is a permutation of these top-level keys.
 
-Continue → [04 — Configuration anatomy](04-configuration-anatomy.md)

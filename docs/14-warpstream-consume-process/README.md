@@ -144,4 +144,3 @@ You should see events like:
 
 This is the workhorse pattern of stream processing: consume → transform → re-publish. Once you have this working you have the skeleton for any event-driven service — enrichment, validation, format conversion, fan-out, CDC processing.
 
-Continue → [15 — Error Handling and DLQ](15-error-handling-dlq.md)

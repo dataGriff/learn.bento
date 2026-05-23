@@ -132,4 +132,3 @@ Tumbling windows are the entry point to streaming analytics — "events per X" i
 
 Note: Bento windows are in-memory. Restarting the pipeline drops any in-flight window data. For durable, large-scale stateful aggregation, push results to ClickHouse, Materialize, or Flink rather than relying solely on Bento's buffer.
 
-Continue → [17 — Enrichment with HTTP and Cache](17-enrichment-http-cache.md)

@@ -117,4 +117,3 @@ The same payload is echoed in the Bento log on the server side.
 
 Plenty of "data pipeline" workloads are actually webhooks — Stripe, GitHub, Segment, Slack. With `http_server` + `sync_response` you can stand up a durable webhook receiver in 30 lines of YAML, with validation, enrichment and durable forwarding all built-in — no web framework, no application server.
 
-Continue → [09 — Bloblang Transform](09-bloblang-transform.md)

@@ -115,4 +115,3 @@ Expected:
 
 This is the canonical batch ETL shape: bounded input, transformation, bounded output. Bento exits cleanly when the input completes — perfect for cron jobs and one-off backfills. It requires no code, no ORM, no data-frame library — only YAML and Bloblang.
 
-Continue → [08 — HTTP Server Input](08-http-server-input.md)
