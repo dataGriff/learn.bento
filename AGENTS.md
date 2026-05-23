@@ -9,15 +9,23 @@ A public tutorial for Bento (declarative stream processing). It serves two purpo
 ## Repo layout
 
 ```
-docs/       21 numbered lesson files in tutorial order (concepts + hands-on walkthroughs)
-examples/   14 self-contained runnable examples (config.yaml + data), one per hands-on lesson
+docs/   21 lesson directories in tutorial order — each contains README.md + (if hands-on) config.yaml + data/
 ```
 
-Every hands-on lesson has two files linked by the same slug: `docs/NN-slug.md` (full lesson) and `examples/NN-slug/` (runnable code). Concept-only lessons have a `docs/` file with no matching example directory.
+Every lesson is a directory under `docs/`. Hands-on lessons include a runnable `config.yaml` alongside `README.md`. Concept-only lessons have only `README.md`.
+
+```
+docs/01-what-is-bento/README.md          ← concept only
+docs/03-hello-world/README.md            ← hands-on
+docs/03-hello-world/config.yaml          ← runnable config
+docs/07-file-to-file/README.md
+docs/07-file-to-file/config.yaml
+docs/07-file-to-file/data/orders.csv     ← sample data
+```
 
 ## Conventions
 
-**Frontmatter is required on every `docs/` file.** The site build fails without it. Required fields:
+**Frontmatter is required on every `README.md`.** The site build fails without it. Required fields:
 
 ```yaml
 ---
@@ -29,10 +37,10 @@ canonical_url: https://hungovercoders.com/training/bento/NN-slug
 ---
 ```
 
-**Naming**: Both `docs/` files and `examples/` directories use leading-zero numbering and kebab-case slugs — `01-what-is-bento`, `03-hello-world`, etc. The numbering in `docs/` is the tutorial order; `examples/` uses its own sequential numbering (01–14) that maps to the hands-on lessons.
+**Naming**: `docs/` directories use leading-zero numbering and kebab-case slugs — `01-what-is-bento`, `03-hello-world`, etc.
 
-**YAML in `examples/`** uses 2-space indentation. No tabs.
+**YAML configs** use 2-space indentation. No tabs.
 
-**Example READMEs** are minimal pointers — just the title, a link to the full lesson on the site, and the run command. Full lesson content lives in `docs/`.
+**Config file paths** use portable relative paths (`./data/orders.csv`, `./out/orders.jsonl`). All paths are relative to the lesson directory — run `bento -c config.yaml` from within the lesson folder, or use `make exNN` which cds in automatically.
 
-**Do not add placeholder values** to example configs. Every example must run as-is (`bento -c config.yaml`) without editing.
+**Do not add placeholder values** to configs. Every config must run as-is (`bento -c config.yaml` from the lesson directory) without editing.

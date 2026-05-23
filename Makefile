@@ -43,63 +43,63 @@ ws-consume: ## Tail a topic.   Usage: make ws-consume TOPIC=orders
 # Tutorial examples — `make exNN`
 # ──────────────────────────────────────────────────────────────────────────────
 
-ex01: ## 01 — hello world
-	$(BENTO) -c examples/01-hello-world/config.yaml
+ex01: ## 03 — hello world
+	(cd docs/03-hello-world && $(BENTO) -c config.yaml)
 
-ex02: ## 02 — file to file (CSV → JSON)
-	$(BENTO) -c examples/02-file-to-file/config.yaml
+ex02: ## 07 — file to file (CSV → JSON)
+	(cd docs/07-file-to-file && $(BENTO) -c config.yaml)
 
-ex03: ## 03 — HTTP server input
-	$(BENTO) -c examples/03-http-server-input/config.yaml
+ex03: ## 08 — HTTP server input
+	(cd docs/08-http-server-input && $(BENTO) -c config.yaml)
 
-ex04: ## 04 — Bloblang transform
-	$(BENTO) -c examples/04-bloblang-transform/config.yaml
+ex04: ## 09 — Bloblang transform
+	(cd docs/09-bloblang-transform && $(BENTO) -c config.yaml)
 
-ex05: ## 05 — filter & route
-	$(BENTO) -c examples/05-filter-and-route/config.yaml
+ex05: ## 10 — filter & route
+	(cd docs/10-filter-and-route && $(BENTO) -c config.yaml)
 
-ex06: ## 06 — fan-out broker
-	$(BENTO) -c examples/06-fan-out-broker/config.yaml
+ex06: ## 11 — fan-out broker
+	(cd docs/11-fan-out-broker && $(BENTO) -c config.yaml)
 
-ex07: ## 07 — WarpStream produce
-	$(BENTO) -c examples/07-warpstream-produce/config.yaml
+ex07: ## 13 — WarpStream produce
+	(cd docs/13-warpstream-produce && $(BENTO) -c config.yaml)
 
-ex08: ## 08 — WarpStream consume + process
-	$(BENTO) -c examples/08-warpstream-consume-process/config.yaml
+ex08: ## 14 — WarpStream consume + process
+	(cd docs/14-warpstream-consume-process && $(BENTO) -c config.yaml)
 
-ex09: ## 09 — error handling & DLQ
-	$(BENTO) -c examples/09-error-handling-dlq/config.yaml
+ex09: ## 15 — error handling & DLQ
+	(cd docs/15-error-handling-dlq && $(BENTO) -c config.yaml)
 
-ex10: ## 10 — windowing & aggregation
-	$(BENTO) -c examples/10-windowing-aggregation/config.yaml
+ex10: ## 16 — windowing & aggregation
+	(cd docs/16-windowing-aggregation && $(BENTO) -c config.yaml)
 
-ex11: ## 11 — enrichment (HTTP + cache)
-	$(BENTO) -c examples/11-enrichment-http-cache/config.yaml
+ex11: ## 17 — enrichment (HTTP + cache)
+	(cd docs/17-enrichment-http-cache && $(BENTO) -c config.yaml)
 
-ex12: ## 12 — end-to-end pipeline
-	$(BENTO) -c examples/12-end-to-end-pipeline/config.yaml
+ex12: ## 18 — end-to-end pipeline
+	(cd docs/18-end-to-end-pipeline && $(BENTO) -c config.yaml)
 
-ex13: ## 13 — observability
-	$(BENTO) -c examples/13-observability/config.yaml
+ex13: ## 19 — observability
+	(cd docs/19-observability && $(BENTO) -c config.yaml)
 
-ex14: ## 14 — pipeline tests (`bento test`)
-	$(BENTO) test examples/14-testing-pipelines/config.yaml
+ex14: ## 20 — pipeline tests (`bento test`)
+	(cd docs/20-testing-pipelines && $(BENTO) test config.yaml)
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Quality / housekeeping
 # ──────────────────────────────────────────────────────────────────────────────
 
-lint: ## Lint all example configs.
-	@for f in examples/*/config.yaml; do \
+lint: ## Lint all lesson configs.
+	@for f in docs/*/config.yaml; do \
 		echo "==> $$f"; \
 		$(BENTO) lint "$$f" || exit 1; \
 	done
 
 test: ## Run all bento tests in the repo.
-	$(BENTO) test ./examples/...
+	$(BENTO) test ./docs/...
 
-clean: ## Remove generated example outputs.
-	rm -rf examples/*/out
+clean: ## Remove generated lesson outputs.
+	rm -rf docs/*/out
 
 clean-all: clean warpstream-down ## Outputs + containers.
 

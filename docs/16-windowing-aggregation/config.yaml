@@ -1,0 +1,46 @@
+# Tumbling windows: every 5 seconds of event time, emit per-customer rollups.
+#
+#  generate ----> system_window ----> group_by_value(customer)
+#                                ----> archive(json_array)
+#                                ----> mapping(rollup) ----> file
+
+input:
+  generate:
+    interval: 200ms        # 5 events per second
+    mapping: |
+      let customers = ["alice","bob","carol"]
+      root.order_id    = uuid_v4()
+      root.customer_id = $customers.index(random_int(min:0, max:2))
+      root.amount      = random_int(min:1, max:100)
+      root.event_time  = now()
+
+# The system_window buffer accumulates messages by event time and releases
+# whole windows downstream. The `timestamp_mapping` tells Bento which field
+# to bucket by.
+buffer:
+  system_window:
+    timestamp_mapping: 'root = this.event_time'
+    size:  5s     # tumbling 5-second windows
+    slack: 1s     # accept events up to 1s late
+
+pipeline:
+  processors:
+    # Inside a closed window: re-batch by customer.
+    - group_by_value:
+        value: ${! this.customer_id }
+
+    # Collapse each per-customer batch into a JSON array of records.
+    - archive:
+        format: json_array
+
+    # Compute the per-customer rollup for this window.
+    - mapping: |
+        root.window_end   = now()
+        root.customer_id  = this.index(0).customer_id
+        root.order_count  = this.length()
+        root.total_amount = this.map_each(o -> o.amount).sum()
+
+output:
+  file:
+    path:  ./out/windows.jsonl
+    codec: lines

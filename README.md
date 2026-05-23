@@ -10,27 +10,26 @@ Read the full tutorial: **[hungovercoders.com/training/bento](https://hungoverco
 
 ```
 learn.bento/
-├── docs/                     # 21 lesson files — concepts and hands-on walkthroughs in tutorial order
-│   ├── 01-what-is-bento.md
-│   ├── 02-installation.md
-│   ├── 03-hello-world.md
-│   ├── 04-core-concepts.md
-│   ├── ...
-│   └── 21-troubleshooting.md
-└── examples/                 # runnable Bento configs — one folder per example
-    ├── 01-hello-world/       # config.yaml + data/
-    ├── 02-file-to-file/
-    ├── ...
-    └── 14-testing-pipelines/
+└── docs/                          # 21 lessons in tutorial order
+    ├── 01-what-is-bento/
+    │   └── README.md              # concept lesson — prose only
+    ├── 03-hello-world/
+    │   ├── README.md              # lesson content
+    │   └── config.yaml            # runnable Bento config
+    ├── 07-file-to-file/
+    │   ├── README.md
+    │   ├── config.yaml
+    │   └── data/orders.csv        # sample input data
+    └── ...
 ```
 
-The `docs/` files are the lessons as rendered on the site. Each example lesson in `docs/` references the corresponding `examples/` folder for the runnable config.
+Each lesson directory contains `README.md` (the full lesson, rendered on the site and on GitHub) plus, for hands-on lessons, a `config.yaml` and any required `data/` files alongside it.
 
 ---
 
 ## Prerequisites
 
-- **Bento** ≥ `v1.4.0` — install instructions in [docs/02-installation.md](docs/02-installation.md)
+- **Bento** ≥ `v1.4.0` — install instructions in [docs/02-installation](docs/02-installation/README.md)
 - **Docker** + **Docker Compose** — required for WarpStream examples (lessons 13–18)
 - **`curl`** + **`jq`** — for the HTTP server example (lesson 08)
 - **`make`** — optional convenience wrapper; all examples can also be run directly with `bento -c`
@@ -39,23 +38,21 @@ The `docs/` files are the lessons as rendered on the site. Each example lesson i
 
 ## Running the examples
 
-Clone this repo, then use `make` or run directly:
+Clone this repo, then use `make` or run directly from the lesson directory:
 
 ```bash
 git clone https://github.com/hungovercoders/learn.bento.git
 cd learn.bento
 
-# Run example 01 (hello world)
+# Run lesson 03 — hello world
 make ex01
-# or
-bento -c examples/01-hello-world/config.yaml
+# or run directly:
+cd docs/03-hello-world && bento -c config.yaml
 
 # Bring up a local WarpStream agent (needed for lessons 13–18)
 make warpstream-up
 make ex07   # produce to WarpStream
 ```
-
-Each `examples/NN-slug/` folder has a short README pointing to the full lesson on the site.
 
 ---
 
