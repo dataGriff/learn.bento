@@ -1,3 +1,11 @@
+---
+title: "Core Concepts"
+series: bento
+order: 3
+description: "The eight words you need to read any Bento config: message, batch, input, processor, output, buffer, cache, and rate limit."
+canonical_url: https://hungovercoders.com/training/bento/03-core-concepts
+---
+
 # 03 — Core concepts
 
 Bento has a small, deliberate vocabulary. Once you internalise these eight

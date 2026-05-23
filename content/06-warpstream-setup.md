@@ -1,3 +1,11 @@
+---
+title: "WarpStream Setup"
+series: bento
+order: 6
+description: "Run a local WarpStream cluster with Docker Compose and connect Bento to it using the kafka_franz input and output."
+canonical_url: https://hungovercoders.com/training/bento/06-warpstream-setup
+---
+
 # 06 — WarpStream setup
 
 [WarpStream](https://www.warpstream.com/) is a Kafka-protocol-compatible

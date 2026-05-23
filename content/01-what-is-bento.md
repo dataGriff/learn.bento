@@ -1,3 +1,11 @@
+---
+title: "What Is Bento?"
+series: bento
+order: 1
+description: "A single static binary that reads YAML and runs a streaming data pipeline — no code, no JVM, no cluster manager."
+canonical_url: https://hungovercoders.com/training/bento/01-what-is-bento
+---
+
 # 01 — What is Bento?
 
 > **TL;DR** Bento is a single static binary that reads YAML and runs a streaming

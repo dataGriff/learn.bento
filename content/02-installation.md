@@ -1,3 +1,11 @@
+---
+title: "Installation"
+series: bento
+order: 2
+description: "Get the bento binary on your PATH in under a minute using Homebrew, direct download, or Docker."
+canonical_url: https://hungovercoders.com/training/bento/02-installation
+---
+
 # 02 — Installation
 
 You only need the `bento` binary on your `PATH`. Pick whichever method fits your OS.
