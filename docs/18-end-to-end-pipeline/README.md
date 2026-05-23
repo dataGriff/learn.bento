@@ -8,13 +8,13 @@ canonical_url: https://hungovercoders.com/training/bento/18-end-to-end-pipeline
 
 # 19 — End-to-end Pipeline
 
-> **Goal:** combine everything — consume from WarpStream, enrich, validate, aggregate by window, fan out to multiple sinks (one of which is another WarpStream topic), with full DLQ handling.
+This is the one I've been building towards. Everything we've covered — consuming from WarpStream, validating and enriching messages, routing errors to a DLQ, windowing into aggregates, fanning out to multiple sinks — all of it comes together here in a single config. It's longer than the lessons that preceded it, but there's nothing in it you haven't seen before. The skill being practised is composition: knowing how to layer these blocks without losing track of error state.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 
-## What this lesson covers
+Here's what this lesson pulls together — a reference map of every capability in the config and which earlier lesson introduced it:
 
 | Capability | From lesson |
 |---|---|
@@ -221,9 +221,8 @@ tail -f ./out/dlq.jsonl
 
 ---
 
-## Things to try
+## Have a go
 
 1. Replace the public zip API with a mocked `http_server` that returns slow or error responses — observe `try`/`catch` in action and messages landing in the DLQ.
 2. Add a metrics + tracer block (see lesson 19) and scrape Prometheus.
 3. Add `bento test` cases (see lesson 20) for the validation step.
-

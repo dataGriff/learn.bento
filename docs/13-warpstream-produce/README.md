@@ -8,19 +8,9 @@ canonical_url: https://hungovercoders.com/training/bento/13-warpstream-produce
 
 # 14 — WarpStream Produce
 
-> **Goal:** generate synthetic events and produce them to a WarpStream topic using the Kafka protocol.
+I wanted to get orders flowing into a WarpStream topic with a sensible partition key and proper compression — and do it without wiring up a producer SDK, configuring a client library, or writing any application code. This lesson shows how to do all of that in a single Bento config. We'll generate synthetic order events and produce them using `kafka_franz`, Bento's high-performance Kafka output.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
-
----
-
-## What this lesson covers
-
-| Concept | Where to look |
-|---|---|
-| `kafka_franz` output (the modern Kafka producer) | `config.yaml` → `output` |
-| Setting Kafka `key` from message content for partitioning | `config.yaml` |
-| Env-var defaulting (`${TOPIC:orders}`) | `config.yaml` |
 
 ---
 
@@ -54,16 +44,16 @@ output:
     timeout:      5s
 ```
 
-**`input.generate`** produces synthetic order events. Bloblang `let` variables are local to the mapping — `$customers` holds an array, and `.index(random_int(...))` picks one element at random. `uuid_v4()` generates a unique order ID for each message.
+**`input.generate`** produces one synthetic order event per second. Bloblang `let` variables are local to the mapping — `$customers` holds an array and `.index(random_int(...))` picks one element at random. `uuid_v4()` gives each order a unique ID.
 
-**The pipeline processor** writes the `customer_id` to a metadata field named `kafka_key`. Metadata is not part of the JSON payload; it lives alongside the message and is used to configure output behaviour.
+**The pipeline processor** writes `customer_id` to a metadata field named `kafka_key`. Metadata is separate from the JSON payload — it travels alongside the message and is used to configure output behaviour rather than appear in the data itself.
 
-**`output.kafka_franz`** is Bento's high-performance Kafka producer, based on the `franz-go` library. Key fields:
+**`output.kafka_franz`** is Bento's Kafka producer, built on the `franz-go` library. A few things worth noting:
 
-- `seed_brokers` — one or more bootstrap addresses. `${WARPSTREAM_BROKER:localhost:9092}` reads from an env var, falling back to `localhost:9092` if unset. WarpStream speaks the Kafka wire protocol, so the same output works unchanged against Redpanda or Apache Kafka.
-- `topic` — also env-var defaulted, so you can point at different topics without editing the config.
-- `key` — the Kafka partition key, read from metadata using the `${! ... }` interpolation syntax. Same `customer_id` value → same partition → ordered delivery per customer.
-- `compression: zstd` — WarpStream supports zstd; use it, it's fast.
+- `seed_brokers` — one or more bootstrap addresses. `${WARPSTREAM_BROKER:localhost:9092}` reads from an env var and falls back to `localhost:9092` if it's not set. WarpStream speaks the Kafka wire protocol, so the same config works unchanged against Redpanda or Apache Kafka.
+- `topic` — also env-var defaulted, so you can retarget without touching the config.
+- `key` — the partition key, read from metadata using the `${! ... }` interpolation syntax. Same `customer_id` → same partition → ordered delivery per customer.
+- `compression: zstd` — WarpStream supports zstd and it's quick. Worth using.
 
 ---
 
@@ -78,7 +68,7 @@ docker compose exec kafka-tools rpk topic create orders --partitions 3 --brokers
 
 ---
 
-## Run it
+## Orders on the bar — run it
 
 ```bash
 cd docs/13-warpstream-produce
@@ -87,18 +77,18 @@ bento -c config.yaml
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
 
-Verify the topic is filling up:
+Verify the topic is filling up in a second terminal:
 
 ```bash
 docker compose exec kafka-tools rpk topic consume orders --brokers warpstream:9092
 # Ctrl-C to stop
 ```
 
-You'll see one synthetic order per second — keyed by `customer_id`, so all events for the same customer land on the same partition.
+You'll see one synthetic order per second — keyed by `customer_id`, so all events for the same customer land on the same partition. I'll be honest, watching a topic fill up in real time never gets old.
 
 ---
 
-## Things to try
+## Have a go
 
 1. Remove `interval` (or set it to `""`) — `generate` fires as fast as it can. Watch the consumer scroll.
 2. Add Kafka headers by writing to metadata and enabling `metadata.include_patterns`:
@@ -115,7 +105,6 @@ You'll see one synthetic order per second — keyed by `customer_id`, so all eve
 
 ---
 
-## Why this matters
+## Why it matters
 
-Producing to Kafka/WarpStream from anything that can shape a JSON object becomes a one-config-file exercise. No producer SDK to wrangle, no schema registry required (though `schema_registry_encode` is a first-class processor if you need it).
-
+Producing to Kafka or WarpStream from anything that can shape a JSON object becomes a one-config-file exercise with Bento. No producer SDK to wrangle, no schema registry required (though `schema_registry_encode` is a first-class processor if you need it). Once the orders are flowing, head to lesson 14 to consume and process them.

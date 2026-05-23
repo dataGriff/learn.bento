@@ -8,12 +8,11 @@ canonical_url: https://hungovercoders.com/training/bento/05-configuration-anatom
 
 # 06 — Configuration Anatomy
 
-A Bento config is YAML. There are a few quality-of-life features beyond plain
-YAML that you should know about before reading the examples.
+A Bento config is YAML, but there are a handful of quality-of-life features layered on top that you'll want to know before you start reading the examples. I wanted to cover these early because hitting an unfamiliar `${! ... }` mid-config without context is a bit disorienting the first time.
 
 ---
 
-## Environment variable interpolation
+## Pouring in the env vars — interpolation at start-up
 
 ```yaml
 input:
@@ -26,14 +25,13 @@ input:
         password:  "${WARPSTREAM_PASS}"
 ```
 
-Syntax: `${VAR}` or `${VAR:default}`. Bento will refuse to start if a non-defaulted
-variable is missing — handy for catching misconfiguration early.
+Syntax is `${VAR}` or `${VAR:default}`. Bento will refuse to start if a non-defaulted variable is missing — which is exactly the right behaviour. I've had it save me from deploying a misconfigured pipeline to production more than once.
 
 ---
 
-## Bloblang interpolation in strings
+## Bloblang interpolation in strings — per-message expressions
 
-Many string fields accept a Bloblang interpolation with the `${! ... }` syntax:
+Many string fields accept a Bloblang interpolation using the `${! ... }` syntax, evaluated once per message rather than at start-up:
 
 ```yaml
 output:
@@ -42,7 +40,7 @@ output:
     codec: lines
 ```
 
-Compare:
+The distinction is worth nailing down:
 
 | Syntax | Evaluated when | Use for |
 |---|---|---|
@@ -53,7 +51,7 @@ Compare:
 
 ## Splitting configs across files
 
-For larger projects, factor pieces out and reference them:
+For larger projects you can factor pieces out and reference them:
 
 ```yaml
 # main.yaml
@@ -65,12 +63,11 @@ resources:
   - !include ./resources/processors.yaml
 ```
 
-The `Makefile` in this repo prefers single-file configs to keep examples
-copy-pasteable, but in production you'll want resource files.
+The examples in this repo use single-file configs to keep things copy-pasteable, but in production you'll almost certainly want to split resource definitions out.
 
 ---
 
-## Linting
+## Lint before you run
 
 Always lint before running:
 
@@ -78,34 +75,32 @@ Always lint before running:
 bento lint config.yaml
 ```
 
-`bento lint` will tell you about:
+`bento lint` will catch:
 - typos in field names
 - unknown components
 - Bloblang errors
 - deprecated fields
 
-CI tip: `bento lint docs/**/config.yaml` catches regressions across all your pipelines.
+CI tip: `bento lint docs/**/config.yaml` catches regressions across all your pipelines in one pass.
 
 ---
 
-## Streams mode
+## Streams mode — many pipelines, one process
 
-Run multiple pipelines in one process:
+Run multiple pipelines in a single process:
 
 ```bash
 bento -s --streams-dir ./streams
 # ./streams/orders.yaml, ./streams/payments.yaml, ./streams/audit.yaml
 ```
 
-Each file becomes a named stream with its own HTTP API endpoint at
-`/streams/<name>`. Useful when you have lots of small pipelines and want
-shared metrics / one process.
+Each file becomes a named stream with its own HTTP API endpoint at `/streams/<name>`. Useful when you have lots of small pipelines and want shared metrics or just one process to keep an eye on.
 
 ---
 
 ## The admin HTTP server
 
-Almost every config exposes:
+Almost every config exposes a small HTTP admin interface — default address `0.0.0.0:4195`, overrideable with `http.address`.
 
 | Endpoint | Returns |
 |---|---|
@@ -114,7 +109,4 @@ Almost every config exposes:
 | `GET /stats`       | Snapshot of internal counters |
 | `POST /streams/X`  | Register/replace stream X (in streams mode) |
 
-Default address is `0.0.0.0:4195`. Override with `http.address`.
-
----
-
+Cheers, fellow hungovercoder — next up is Bloblang itself, and you'll be using it constantly from here on.

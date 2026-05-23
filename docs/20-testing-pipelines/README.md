@@ -8,13 +8,13 @@ canonical_url: https://hungovercoders.com/training/bento/20-testing-pipelines
 
 # 21 — Testing Pipelines
 
-> **Goal:** unit-test your YAML. `bento test` runs assertions against a config without ever needing a real input or output.
+Your pipeline configs are testable. Actually testable. Not "run it and see" testable — proper unit tests with assertions, pass/fail output, and a diff on failure. `bento test` injects messages directly into a range of processors and compares the result against what you expected, with no real input, no real output, and no Docker required. I wanted this lesson to be near the end of the series because by now you've got enough pipeline logic worth protecting.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 
-## What this lesson covers
+Here's what this lesson pulls together:
 
 | Concept | Where to look |
 |---|---|
@@ -117,6 +117,8 @@ tests:
 
 The test file lives next to the config and is named `config_test.yaml`. Bento discovers it automatically when you run `bento test config.yaml`.
 
+I'll be honest — when I first saw `bento test` I assumed it would be limited, a nice-to-have. Then I wrote a test for a tier-classification mapping, broke it on purpose, and got a unified diff in under a second with no broker, no container, no fixture setup. It's the single best argument for keeping your business logic in Bento rather than a hand-rolled service.
+
 ---
 
 ## Run it
@@ -140,7 +142,7 @@ A failure prints a unified diff between expected and actual output.
 
 ---
 
-## Things to try
+## Have a go
 
 1. Break the tier thresholds in `config.yaml` (swap `>= 100` for `>= 50`) and re-run — see the diff.
 2. Add a test for the `gold` tier: `total >= 100`.
@@ -156,7 +158,6 @@ A failure prints a unified diff between expected and actual output.
 
 ---
 
-## Why this matters
+## Streaming pipelines that change without tests are pipelines that break silently
 
-Streaming pipelines that change without tests are pipelines that silently start dropping or corrupting data. `bento test` is the single biggest reason to choose Bento over a hand-rolled stream service: your business logic is testable in isolation with no Kafka, no Docker, no fixture setup. A fast, zero-dependency test loop that runs in milliseconds.
-
+Dropped messages. Silent data corruption. A mapping that used to produce `"gold"` producing `"silver"` after an innocent-looking config change. `bento test` is the answer to all of that — a fast, zero-dependency test loop that runs in milliseconds and tells you exactly where the diff is, fellow hungovercoder.

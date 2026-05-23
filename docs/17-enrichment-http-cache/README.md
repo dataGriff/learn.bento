@@ -8,13 +8,13 @@ canonical_url: https://hungovercoders.com/training/bento/17-enrichment-http-cach
 
 # 18 — Enrichment with HTTP and Cache
 
-> **Goal:** look up extra fields from an external service for each event, but **cache the result** so we don't hammer the API.
+I wanted to show this pattern early because it comes up in almost every real pipeline: you've got a stream of events and each one needs some extra context that lives elsewhere — a zip code lookup, a customer tier, a currency rate. The naïve approach is to fire an HTTP request for every message. That works right up until the upstream API blocks you or bills you for it. So we cache.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 
-## What this lesson covers
+Here's what this lesson pulls together:
 
 | Concept | Where to look |
 |---|---|
@@ -107,7 +107,7 @@ Inside the branch: the `cache` processor with `operator: get` attempts a cache l
 
 **`cache_resources`** defines a named `memory` cache with a one-hour TTL. The label `zip_cache` is what the `cache` processor references.
 
-**`rate_limit_resources`** adds a safety belt: even on a cache miss, Bento won't exceed 5 requests per second to the upstream API. The `http` processor references it via `rate_limit: zip_api`.
+**`rate_limit_resources`** adds a safety belt: even on a cache miss, Bento won't exceed 5 requests per second to the upstream API. The `http` processor references it via `rate_limit: zip_api`. I'll be honest — the rate limit is there because hitting a public API once per message at 10 msgs/sec will get you blocked fast. Ask me how I know.
 
 ---
 
@@ -130,7 +130,7 @@ Each event will have a `location` object with `city`, `state`, and `country`. On
 
 ---
 
-## Things to try
+## Have a go
 
 1. Turn off Wi-Fi after the cache is warm — the pipeline keeps working from cache.
 2. Set `default_ttl: 5s` and watch HTTP calls resume after expiry.
@@ -147,7 +147,6 @@ Each event will have a `location` object with `city`, `state`, and `country`. On
 
 ---
 
-## Why this matters
+## Why this is worth understanding properly
 
-Cache-aside enrichment is one of the most common real-world Bento patterns. The `branch` + `cache` + `http` triad gives you Stripe-style customer lookup, GeoIP enrichment, currency conversion, feature-flag joins — all without an ORM, an HTTP framework, or a custom service.
-
+Cache-aside enrichment is one of the most common real-world Bento patterns. The `branch` + `cache` + `http` triad gives you Stripe-style customer lookup, GeoIP enrichment, currency conversion, feature-flag joins — all without an ORM, an HTTP framework, or a custom service. It's a lot of capability for what amounts to about 30 lines of YAML, fellow hungovercoder.

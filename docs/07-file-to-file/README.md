@@ -8,24 +8,13 @@ canonical_url: https://hungovercoders.com/training/bento/07-file-to-file
 
 # 08 — File to File (CSV to JSON)
 
-> **Goal:** read a CSV, transform each row, write structured JSON.
+I wanted a dead-simple hands-on pipeline that shows Bento doing real ETL work without needing a running broker or database. This one reads a CSV of orders, coerces the types with Bloblang, and writes structured JSON-Lines to disk. It's the canonical batch shape: bounded input, transformation, bounded output — and Bento exits cleanly when the CSV is exhausted. No `Ctrl-C` required.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 
-## What this lesson covers
-
-| Concept | Where to look |
-|---|---|
-| `csv` input — parses headers, emits one message per row | `config.yaml` → `input` |
-| `mapping` processor in `pipeline.processors[]` | `config.yaml` → `pipeline` |
-| `file` output with a static path | `config.yaml` → `output` |
-| Bloblang type coercion (`.number()`, `.bool()`) | `config.yaml` |
-
----
-
-## The config
+## Cracking open the CSV — the input
 
 ```yaml
 input:
@@ -34,31 +23,11 @@ input:
       - ./data/orders.csv
     parse_header_row: true
     delimiter: ","
-
-pipeline:
-  processors:
-    - mapping: |
-        root.order_id     = this.order_id.number()
-        root.customer     = this.customer
-        root.amount       = this.amount.number()
-        root.paid         = this.paid.bool()
-        root.processed_at = now()
-
-output:
-  file:
-    path: ./out/orders.jsonl
-    codec: lines
 ```
 
-**`input.csv`** reads the file, uses the first row as field names (`parse_header_row: true`), and emits one message per data row. All values arrive as strings — CSV has no type system.
+The `csv` input reads the file, uses the first row as field names (`parse_header_row: true`), and emits one message per data row. Every value arrives as a string — CSV has no type system, so that's all it can do.
 
-**`pipeline.processors[0].mapping`** coerces types using Bloblang's built-in methods: `.number()` converts a string like `"12.50"` to the float `12.5`, and `.bool()` converts `"true"` to `true`. `now()` stamps the processing time. Without this step, every field would be a string in the output JSON.
-
-**`output.file`** writes JSON-Lines to a file on disk. The `codec: lines` setting means one complete JSON object per line — the standard JSONL format.
-
-When the input is exhausted (the CSV is fully read) Bento exits cleanly — no `Ctrl-C` needed.
-
-The input CSV looks like this:
+The input file looks like this:
 
 ```csv
 order_id,customer,amount,paid
@@ -69,7 +38,39 @@ order_id,customer,amount,paid
 
 ---
 
-## Run it
+## Giving the data a shape — the processor
+
+```yaml
+pipeline:
+  processors:
+    - mapping: |
+        root.order_id     = this.order_id.number()
+        root.customer     = this.customer
+        root.amount       = this.amount.number()
+        root.paid         = this.paid.bool()
+        root.processed_at = now()
+```
+
+This is where the type coercion happens. `.number()` converts `"12.50"` to the float `12.5`; `.bool()` converts `"true"` to `true`. Without this step every field would be a string in the output — which is usually not what you want downstream. `now()` stamps the row with a processing timestamp while we're at it.
+
+I'll be honest — forgetting this coercion step is something I've done more than once. You look at the output and everything looks right until something downstream tries to do arithmetic on a string and falls over.
+
+---
+
+## Pouring the output — writing JSON-Lines
+
+```yaml
+output:
+  file:
+    path: ./out/orders.jsonl
+    codec: lines
+```
+
+`codec: lines` means one complete JSON object per line — the standard JSONL format. Simple, appendable, and readable with `cat`.
+
+---
+
+## Running it
 
 ```bash
 cd docs/07-file-to-file
@@ -78,7 +79,7 @@ bento -c config.yaml
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
 
-Bento reads the CSV, transforms each row, then exits. Inspect the output:
+Bento reads the CSV, transforms each row, writes the output, then exits. Inspect what it produced:
 
 ```bash
 cat ./out/orders.jsonl
@@ -94,7 +95,7 @@ Expected:
 
 ---
 
-## Things to try
+## Have a go
 
 1. Add a column `currency` to the CSV — Bento picks it up automatically because `csv` is header-driven.
 2. Filter unpaid orders by adding this to the mapping:
@@ -112,7 +113,6 @@ Expected:
 
 ---
 
-## Why this matters
+## Why this shape matters
 
-This is the canonical batch ETL shape: bounded input, transformation, bounded output. Bento exits cleanly when the input completes — perfect for cron jobs and one-off backfills. It requires no code, no ORM, no data-frame library — only YAML and Bloblang.
-
+No code, no ORM, no data-frame library — only YAML and Bloblang. This is what makes Bento genuinely useful for cron jobs and one-off backfills: the pipeline describes the transformation declaratively, Bento handles the plumbing, and when the input is exhausted it gets out of the way. Read on, fellow hungovercoder.

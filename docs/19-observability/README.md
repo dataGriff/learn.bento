@@ -8,13 +8,13 @@ canonical_url: https://hungovercoders.com/training/bento/19-observability
 
 # 20 — Observability
 
-> **Goal:** make a pipeline visible — Prometheus metrics, structured logs, distributed traces.
+I wanted this lesson to be the one where you stop guessing and start knowing. Up until now we've been running pipelines and eyeballing output files. That works fine for tutorials. It does not work in production at three in the morning. This lesson hooks up Prometheus metrics, structured JSON logs, and distributed OTLP traces — the three pillars — and shows you just how little configuration it actually takes.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 
-## What this lesson covers
+Here's what this lesson pulls together:
 
 | Concept | Where to look |
 |---|---|
@@ -103,6 +103,8 @@ logger:
 
 **The `log` processor** emits a per-message log line at the specified level. `fields_mapping` is a Bloblang script that builds the structured fields for that line — here extracting `order_id`, `tier`, and `amount` from the message payload.
 
+I'll be honest — I expected wiring up observability to require some kind of SDK, a dependency, a sidecar. Five lines of YAML. That's it.
+
 ---
 
 ## Run it
@@ -143,15 +145,14 @@ You'll see one trace per message with spans for each processor in the pipeline.
 
 ---
 
-## Things to try
+## Have a go
 
 1. Hit `/metrics` while messages flow and compare `bento_input_received_total` with `bento_output_sent_total` — the difference is your in-flight count.
-2. Add a label for a high-cardinality field like `order_id` — observe Prometheus memory grow rapidly (and understand why you shouldn't do this in production).
+2. Add a label for a high-cardinality field like `order_id` — observe Prometheus memory grow rapidly (and understand why you shouldn't do this in production, fellow hungovercoder).
 3. Set `level: DEBUG` and run a Kafka consumer example — Bento logs every batch fetch and offset commit.
 
 ---
 
-## Why this matters
+## A pipeline you can't measure is a pipeline you can't operate
 
-A pipeline you can't measure is a pipeline you can't operate. The three pillars — metrics, logs, traces — are first-class in Bento. Turning them on takes 5 lines of YAML; no SDK changes, no agent sidecars, no framework wiring.
-
+The three pillars — metrics, logs, traces — are first-class in Bento. Turning them on takes 5 lines of YAML; no SDK changes, no agent sidecars, no framework wiring. Once you've seen the `/metrics` endpoint light up with per-component counters you didn't have to write yourself, it's hard to go back to anything that doesn't do this out of the box.

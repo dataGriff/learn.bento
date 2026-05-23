@@ -8,13 +8,15 @@ canonical_url: https://hungovercoders.com/training/bento/09-bloblang-transform
 
 # 10 — Bloblang Transform
 
-> **Goal:** see Bloblang earn its keep on a realistic event shape — conditionals, type coercion, array operations, metadata, error handling.
+Bloblang is where Bento earns its keep. The previous lessons showed you the plumbing — inputs, outputs, the three-part shape. This one shows you what happens in the middle, with a realistic event shape that needs conditionals, array maths, type coercion, safe field access, and metadata. By the end you'll have a config that takes messy order events and turns them into something clean enough to actually route and analyse.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 
 ## What this lesson covers
+
+Worth keeping as a reference while you read the config:
 
 | Concept | Where to look |
 |---|---|
@@ -26,7 +28,7 @@ canonical_url: https://hungovercoders.com/training/bento/09-bloblang-transform
 
 ---
 
-## The config
+## The config — two processors doing the heavy lifting
 
 ```yaml
 input:
@@ -77,9 +79,11 @@ output:
 - `match` is Bloblang's switch expression — evaluates top-to-bottom and returns the first matching branch's value. The bare `_` at the end is the default.
 - `meta routing_key = root.tier` writes to message *metadata* (not the payload). Metadata fields are invisible in the output JSON but available to output switch cases and downstream routing.
 
+I'll be honest — `map_each` tripped me up the first time because I kept writing it like a JavaScript `.map()` and forgetting that Bloblang's lambda syntax is `item -> expression`, not `(item) => expression`. Small thing, but annoying when you can't figure out why your array is coming back empty.
+
 ---
 
-## Run it
+## Running it
 
 ```bash
 cd docs/09-bloblang-transform
@@ -103,7 +107,7 @@ You'll see normalised events with:
 
 ---
 
-## Things to try
+## Have a go
 
 Use `bento blobl` for interactive experimentation:
 
@@ -120,7 +124,4 @@ Then try mutating the config:
 
 ---
 
-## Why this matters
-
-Bloblang is the value Bento adds beyond plumbing. Everything in this example — type coercion, conditionals, derived fields, defaults, metadata — appears in every real pipeline. Get fluent here and the rest is downhill.
-
+Get fluent with Bloblang here and the rest of this series is downhill, fellow hungovercoder. Everything that follows — routing, fan-out, enrichment — leans on exactly these building blocks.

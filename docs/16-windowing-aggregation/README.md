@@ -8,13 +8,13 @@ canonical_url: https://hungovercoders.com/training/bento/16-windowing-aggregatio
 
 # 17 — Windowing and Aggregation
 
-> **Goal:** group events into fixed time windows and emit one rolled-up message per window — the basic primitive for "events per minute" dashboards.
+I wanted to get to this lesson from the start. This is where Bento gets properly interesting. Up until now, every message has moved through the pipeline one at a time — in, processed, out. Windowing changes that. We hold events, wait for a time boundary, then emit one rolled-up summary per window. "Events per minute" dashboards, rolling totals, per-customer order counts — this is how you build all of that in pure YAML.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
 
 ---
 
-## What this lesson covers
+Here's what this lesson pulls together:
 
 | Concept | Where to look |
 |---|---|
@@ -80,13 +80,15 @@ When a window closes, the buffer releases the entire batch of accumulated messag
 
 ---
 
-## How `system_window` works
+## How tumbling windows actually behave
 
 ```
 event time:    | 0s -------- 5s | 5s -------- 10s | 10s -------- 15s |
 records:       a  b  c  d        e  f  g           h  i
 emit:                    [a,b,c,d]      [e,f,g]              [h,i]
 ```
+
+I'll be honest — when I first saw the window buffer docs I expected something heavier, more like a Flink job. It's not. It's a buffer section in a YAML file and it does exactly what it says on the tin.
 
 ---
 
@@ -118,7 +120,7 @@ Sample line:
 
 ---
 
-## Things to try
+## Have a go
 
 1. Change `size` from `5s` to `1m` — observe much fewer, much larger rollups.
 2. Add `slack: 2s` — admit late data up to 2 seconds after a window closes.
@@ -127,9 +129,8 @@ Sample line:
 
 ---
 
-## Why this matters
+## Why tumbling windows matter
 
 Tumbling windows are the entry point to streaming analytics — "events per X" is the most-asked dashboard question, and Bento answers it without needing Flink, Spark, or kSQL.
 
 Note: Bento windows are in-memory. Restarting the pipeline drops any in-flight window data. For durable, large-scale stateful aggregation, push results to ClickHouse, Materialize, or Flink rather than relying solely on Bento's buffer.
-

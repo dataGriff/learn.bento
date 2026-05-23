@@ -8,7 +8,7 @@ canonical_url: https://hungovercoders.com/training/bento/11-fan-out-broker
 
 # 12 — Fan-out Broker
 
-> **Goal:** deliver every message to *multiple* destinations — the classic "tap a stream" pattern.
+The previous lesson routed messages to *one* of several destinations. Sometimes you want *all* of them. Same event, three different shapes, three different sinks — raw JSON for the data lake, a human-readable audit log, and a slimmed-down summary for a downstream consumer. That's what `broker` with `pattern: fan_out` is for, and it's the answer to roughly half of all "can we also send this to X?" conversations I've ever sat in.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
@@ -24,7 +24,7 @@ canonical_url: https://hungovercoders.com/training/bento/11-fan-out-broker
 
 ---
 
-## The config
+## The config — one stream, three glasses
 
 ```yaml
 input:
@@ -85,9 +85,11 @@ The three branches here produce three different shapes from the same source even
 - `audit.log` — a human-readable text line formatted with `format()`.
 - `summary.jsonl` — a stripped-down object with only `id`, `total`, and `tier`.
 
+I'll be honest — I spent an embarrassing amount of time early on writing separate pipelines for audit and primary writes. Finding out you can do this in one config with per-branch processors felt a bit like being told you could've taken the lift the whole time.
+
 ---
 
-## Run it
+## Pouring every glass — running it
 
 ```bash
 cd docs/11-fan-out-broker
@@ -123,7 +125,7 @@ By default, `fan_out` waits for **all** outputs to ack before acking upstream. A
 
 ---
 
-## Things to try
+## Have a go
 
 1. Add a fourth branch that POSTs each event to `httpbin.org/post` using `http_client`.
 2. Switch `pattern` to `round_robin` — observe each branch only receives approximately one-third of messages.
@@ -131,7 +133,4 @@ By default, `fan_out` waits for **all** outputs to ack before acking upstream. A
 
 ---
 
-## Why this matters
-
-Fan-out is the answer to half of all "can we *also* send this to X?" requests. Auditing, mirroring to S3, dual-writing during migrations, dev/test sampling — all are one `broker` block away.
-
+Fan-out is the answer to half of all "can we *also* send this to X?" requests. Auditing, mirroring to S3, dual-writing during migrations, dev/test sampling — all are one `broker` block away. Well done fellow hungovercoder, you've now got both routing patterns in your toolkit: switch for one-of, broker for all-of.

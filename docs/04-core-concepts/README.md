@@ -8,37 +8,29 @@ canonical_url: https://hungovercoders.com/training/bento/04-core-concepts
 
 # 05 — Core Concepts
 
-Bento has a small, deliberate vocabulary. Once you internalise these eight
-words, every example in this repo (and almost every config you'll ever see)
-becomes trivial to read.
+Bento has a small, deliberate vocabulary. I wanted to get this down in one place because once you've internalised these eight words, every example in this repo — and honestly almost every config you'll ever encounter — becomes trivial to read. We'll use all of them across the series, so it's worth a few minutes here before things get hands-on.
 
 ---
 
-## 1. Message
+## 1. Message — the unit of work
 
-The unit of work. A message has:
+A message is what flows through the pipeline. It has three parts:
 
 - a **payload** (`bytes` — but processors usually treat it as JSON)
 - **metadata** (key/value strings — set by inputs, mutated by processors)
-- a **delivery context** (the input owes an ack/nack)
+- a **delivery context** (the input owes an ack/nack back to the source)
 
-> Mental model: a Kafka record. Bytes + headers + an offset to ack.
-
----
-
-## 2. Batch
-
-A list of messages handled together. Inputs may emit batches natively (a Kafka
-poll, a CSV file, a `read_until`), or processors can batch via the `batching`
-field at the input or output level. **Most processors operate per-message but
-some operate per-batch** — the docs say which.
+Think of it like a Kafka record: bytes plus headers plus an offset to acknowledge.
 
 ---
 
-## 3. Input
+## 2. Batch — messages travelling together
 
-Where messages come from. Examples: `generate`, `stdin`, `file`, `http_server`,
-`kafka_franz`, `csv`, `gcp_pubsub`, `aws_sqs`, `mqtt`, `redis_streams`, `socket`.
+A batch is a list of messages handled as a group. Inputs may emit batches natively — a Kafka poll, a CSV file read, a `read_until` — or you can batch explicitly via the `batching` field at the input or output level. Most processors operate per-message, but some operate per-batch; the docs say which is which.
+
+---
+
+## 3. Input — where messages come from
 
 ```yaml
 input:
@@ -48,14 +40,13 @@ input:
     consumer_group: bento-orders-consumer
 ```
 
-Inputs are responsible for **acking back to the source** when the rest of the
-pipeline confirms success. That's where Bento's at-least-once guarantee comes from.
+The full list includes `generate`, `stdin`, `file`, `http_server`, `kafka_franz`, `csv`, `gcp_pubsub`, `aws_sqs`, `mqtt`, `redis_streams`, `socket`, and more. Inputs are responsible for **acking back to the source** once the rest of the pipeline confirms success. That's where Bento's at-least-once guarantee lives.
 
 ---
 
-## 4. Processor
+## 4. Processor — a function over messages
 
-A function over messages. Chain them in `pipeline.processors[]`. The most common ones:
+Processors live in `pipeline.processors[]` and run in order. The ones you'll reach for most often:
 
 | Processor | Purpose |
 |---|---|
@@ -74,34 +65,31 @@ A function over messages. Chain them in `pipeline.processors[]`. The most common
 
 ---
 
-## 5. Output
+## 5. Output — where messages go
 
-Where messages go. Same shape as inputs: `stdout`, `file`, `kafka_franz`,
-`http_client`, `aws_s3`, `redis_pubsub`, `elasticsearch`, `sql_insert`,
-`broker`, `switch`, `drop`, `reject`.
+Same shape as inputs: `stdout`, `file`, `kafka_franz`, `http_client`, `aws_s3`, `redis_pubsub`, `elasticsearch`, `sql_insert`, `broker`, `switch`, `drop`, `reject`.
 
-Two of the outputs are *meta-outputs*:
+Two outputs are *meta-outputs* worth knowing early:
 
 - **`broker`** — fan-out (`pattern: fan_out`) or load-balance (`pattern: round_robin`) to many child outputs.
 - **`switch`** — content-based routing to one of N child outputs.
 
 ---
 
-## 6. Buffer
+## 6. Buffer — when you need async hand-off
 
-By default Bento has **no buffer** — messages flow synchronously and
-backpressure propagates naturally. You opt into one when you need:
+By default Bento has **no buffer** — messages flow synchronously and backpressure propagates naturally back to the input. You opt into a buffer when you need one of two things:
 
-- **`memory`** — async hand-off, smoothing bursts.
-- **`system_window`** — *time-windowed* batches (tumbling/sliding windows by event time).
+- **`memory`** — async hand-off that smooths bursts.
+- **`system_window`** — time-windowed batches (tumbling or sliding windows by event time).
 
-Buffers can break the at-least-once chain — read the docs before adding one.
+I'll be honest: I've reached for a buffer exactly once in real pipelines, and that was for windowing. For most things the synchronous default is the right call. Also worth knowing — buffers can break the at-least-once chain, so read the docs carefully before adding one.
 
 ---
 
-## 7. Cache & Rate Limit
+## 7. Cache & Rate Limit — named resources
 
-Resources that other components reference by name.
+These are shared resources that other components reference by label. Define them once, use them anywhere.
 
 ```yaml
 cache_resources:
@@ -116,7 +104,7 @@ rate_limit_resources:
       interval: 1s
 ```
 
-Used like this from a processor:
+Used from a processor like this:
 
 ```yaml
 - cache:
@@ -127,11 +115,9 @@ Used like this from a processor:
 
 ---
 
-## 8. Resource
+## 8. Resource — DRY for repeated chunks
 
-Any of `input`, `output`, `processor`, `cache`, `rate_limit`, `buffer` can be
-defined once at the top level under `*_resources` and referenced by `label`
-elsewhere — DRY for repeated chunks.
+Any of `input`, `output`, `processor`, `cache`, `rate_limit`, or `buffer` can be defined once at the top level under `*_resources` and referenced by `label` elsewhere. Hugely useful when the same processor logic appears across multiple pipelines.
 
 ```yaml
 processor_resources:
@@ -147,7 +133,7 @@ pipeline:
 
 ---
 
-## Putting it together — full anatomy
+## Cracking open the full anatomy
 
 ```yaml
 http: { address: 0.0.0.0:4195 }            # admin/metrics endpoint
@@ -175,5 +161,4 @@ tracer:  { open_telemetry_collector: {} }  # optional
 logger:  { level: INFO, format: json }     # optional
 ```
 
-That's it. Every config you'll ever see is a permutation of these top-level keys.
-
+That's it. Every config you'll ever see is a permutation of these top-level keys. Read on, fellow hungovercoder — next up we pull apart the config file itself.

@@ -8,7 +8,7 @@ canonical_url: https://hungovercoders.com/training/bento/10-filter-and-route
 
 # 11 — Filter and Route
 
-> **Goal:** content-based routing — same input, different destinations depending on the message.
+Most real pipelines don't treat every message the same — gold orders want different handling to bronze ones, failures go somewhere errors go, and some messages need to be dropped quietly before they reach any sink at all. This lesson shows you how Bento handles that with two flavours of `switch`: one in the processor chain, one at the output. Same input, different destinations depending on what's in the message.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
@@ -25,7 +25,7 @@ canonical_url: https://hungovercoders.com/training/bento/10-filter-and-route
 
 ---
 
-## The config
+## The config — two switches, two jobs
 
 ```yaml
 input:
@@ -84,7 +84,7 @@ The `check:` value in each case is a Bloblang expression returning a boolean. Yo
 
 ---
 
-## Run it
+## Pour it out — running it
 
 ```bash
 cd docs/10-filter-and-route
@@ -110,11 +110,11 @@ ls ./out/
 | Effect | Run different processors on the same message | Send the message to a different output |
 | Use when | "Do *X* if the message looks like *Y*" | "Write to *X* if the message looks like *Y*" |
 
-You'll often use both together: a switch processor to mark or normalise per class, then a switch output to fan out to per-class sinks.
+You'll often use both together: a switch processor to mark or normalise per class, then a switch output to fan out to per-class sinks. I'll be honest — when I first saw both in the same config I thought someone had made an error and used the wrong one. Nope. They genuinely do different things, and once that clicks it's hard to unsee.
 
 ---
 
-## Things to try
+## Have a go
 
 1. Add a `default` case to the output switch that writes to `unknown.jsonl` — useful for catching unclassified messages.
 2. Move the `processed_at` stamp to a common mapping placed *before* the switch processor — observe how processors share state via metadata.
@@ -123,7 +123,4 @@ You'll often use both together: a switch processor to mark or normalise per clas
 
 ---
 
-## Why this matters
-
-Real pipelines almost always need different code paths for different message shapes — orders vs refunds, success vs failure, customer vs admin. The switch primitives combined with Bloblang predicates handle 99% of routing requirements without needing a programming language.
-
+Real pipelines almost always need different code paths for different message shapes — orders vs refunds, success vs failure, customer vs admin. The switch primitives combined with Bloblang predicates handle 99% of routing requirements without needing a programming language. Well done for getting this far, fellow hungovercoder — next we'll look at what happens when you need to send the same message to *multiple* destinations at once.

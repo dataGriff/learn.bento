@@ -8,32 +8,27 @@ canonical_url: https://hungovercoders.com/training/bento/06-bloblang-cheatsheet
 
 # 07 — Bloblang Cheat-Sheet
 
-[Bloblang](https://warpstreamlabs.github.io/bento/docs/guides/bloblang/about) is
-the assignment-based mapping language at the heart of Bento. You will write it
-constantly. Bookmark this page.
-
-There's an interactive playground at <https://warpstreamlabs.github.io/bento/blobl/>
-— use it.
+[Bloblang](https://warpstreamlabs.github.io/bento/docs/guides/bloblang/about) is the assignment-based mapping language at the heart of Bento. You'll write it constantly — every `mapping` processor, every dynamic field value, every filter. Bookmark this page and keep the interactive playground open alongside it: <https://warpstreamlabs.github.io/bento/blobl/>
 
 ---
 
-## The two roots
+## The two roots — what you're building and where you start
 
 ```coffee
 root = ...     # build a brand-new message payload
 this = ...     # the incoming message payload (read-only conceptually)
 ```
 
-`root = this` is the identity transform.
+`root = this` is the identity transform — passes everything straight through unchanged.
 
-You can also assign to specific paths:
+You can also assign to specific paths rather than replacing the whole thing:
 
 ```coffee
 root.user.email = this.user.email.lowercase()
 root.processed_at = now()
 ```
 
-Anything not assigned is **dropped**. Start with `root = this` if you want to keep everything.
+Anything not assigned is **dropped**. Start with `root = this` if you want to keep everything and only touch a few fields.
 
 ---
 
@@ -74,7 +69,7 @@ this.json_str.format_json(indent: "  ")
 
 ---
 
-## Number / time methods
+## Number and time methods
 
 ```coffee
 this.amount * 100
@@ -99,13 +94,13 @@ root.status = match this.code {
 
 ---
 
-## Filtering / dropping a message
+## Filtering — dropping a message from the stream
 
 ```coffee
 root = if this.amount < 0 { deleted() } else { this }
 ```
 
-`deleted()` removes the message from the stream.
+`deleted()` removes the message entirely. I'll be honest, the first time I used this I expected it to feel hacky — it doesn't. It's clean and it composes well with the rest of the mapping.
 
 ---
 
@@ -137,8 +132,7 @@ root.envelope_id = this.id
 
 ## Errors are values
 
-If a step fails (e.g. `parse_json()` on garbage), the message is **flagged**
-but processing continues. Use:
+If a step fails — say, `parse_json()` on garbage input — the message is **flagged** but processing continues rather than blowing up. You can handle it explicitly:
 
 ```coffee
 root.parsed = this.body.parse_json().catch({})       # default-on-error
@@ -149,7 +143,7 @@ root.is_bad = errored()                              # boolean
 
 ---
 
-## Real example — putting it together
+## Putting it all together
 
 Input:
 ```json
@@ -179,5 +173,4 @@ Output:
 
 …with metadata `tier=low` set on the message.
 
----
-
+Well done, fellow hungovercoder. Keep this page to hand — you'll be back.

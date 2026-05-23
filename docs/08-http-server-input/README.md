@@ -8,13 +8,15 @@ canonical_url: https://hungovercoders.com/training/bento/08-http-server-input
 
 # 09 — HTTP Server Input
 
-> **Goal:** turn Bento into a tiny HTTP service that ingests events and returns a synchronous response.
+I wanted to know how far I could push Bento before I needed an actual web framework. Turns out the answer is: pretty far. This lesson turns Bento into a tiny HTTP service — it listens on a port, accepts a POST, does some light processing, and fires a real JSON response back at the caller. No Express, no Flask, no application server. Thirty lines of YAML.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/).
 
 ---
 
-## What this lesson covers
+## What's going on under the hood
+
+Four moving parts worth understanding before we look at the config:
 
 | Concept | Where to look |
 |---|---|
@@ -25,7 +27,7 @@ canonical_url: https://hungovercoders.com/training/bento/08-http-server-input
 
 ---
 
-## The config
+## Pulling a pint of config
 
 ```yaml
 http:
@@ -67,7 +69,9 @@ output:
 
 ---
 
-## Run it
+## Two terminals, one pipeline
+
+You'll need two terminal windows for this one. In the first, fire up the pipeline:
 
 ```bash
 cd docs/08-http-server-input
@@ -76,7 +80,7 @@ bento -c config.yaml
 
 > Don't have the repo? `git clone https://github.com/hungovercoders/learn.bento.git`
 
-In another terminal, POST a JSON event:
+You'll see Bento start up and report that it's listening. In a second terminal, POST a JSON event:
 
 ```bash
 curl -s -X POST http://localhost:4195/post \
@@ -97,9 +101,11 @@ You'll see the response synthesised by Bento:
 
 The same payload is echoed in the Bento log on the server side.
 
+I'll be honest — the first time I saw `sync_response` I assumed it was some kind of hack or niche edge-case feature. It isn't. It's exactly how you'd build a webhook receiver or a validation endpoint, and the fact that you're simultaneously writing to stdout and replying to the caller without any extra wiring still makes me happy every time.
+
 ---
 
-## Things to try
+## Have a go
 
 1. POST malformed JSON — observe the error path:
    ```bash
@@ -116,5 +122,4 @@ The same payload is echoed in the Bento log on the server side.
 
 ## Why this matters
 
-Plenty of "data pipeline" workloads are actually webhooks — Stripe, GitHub, Segment, Slack. With `http_server` + `sync_response` you can stand up a durable webhook receiver in 30 lines of YAML, with validation, enrichment and durable forwarding all built-in — no web framework, no application server.
-
+Plenty of "data pipeline" workloads are actually webhooks — Stripe, GitHub, Segment, Slack. With `http_server` + `sync_response` you can stand up a durable webhook receiver in 30 lines of YAML, with validation, enrichment and durable forwarding all built-in — no web framework, no application server. Well done fellow hungovercoder, you've just built your first Bento API.

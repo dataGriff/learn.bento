@@ -8,21 +8,9 @@ canonical_url: https://hungovercoders.com/training/bento/15-error-handling-dlq
 
 # 16 — Error Handling and DLQ
 
-> **Goal:** isolate failure, retry transient errors, route permanently-broken messages to a dead-letter queue (DLQ).
+This is the grown-up stuff. Any pipeline can handle a clean, well-formed message flowing through on a good day — but what happens when the data is malformed, a field is missing, or a downstream service is temporarily unhappy? This lesson is about failing safely: isolating failures, de-duplicating replays, and routing broken messages to a dead-letter queue (DLQ) rather than silently dropping them or crashing the pipeline.
 
 **Prerequisites:** Bento installed — see [02 — Installation](../02-installation/). WarpStream running — see [12 — WarpStream Setup](../12-warpstream-setup/).
-
----
-
-## What this lesson covers
-
-| Concept | Where to look |
-|---|---|
-| `try` block — short-circuit a sub-pipeline on error | `config.yaml` → `pipeline` |
-| `catch` block — recover / annotate errors | `config.yaml` |
-| `errored()` predicate in a `switch` output | `config.yaml` → `output` |
-| `dedupe` + `cache_resources` (idempotency) | `config.yaml` |
-| `throw()` for explicit errors in Bloblang | `config.yaml` |
 
 ---
 
@@ -83,15 +71,17 @@ output:
             codec: lines
 ```
 
-**Bento's error model:** processors don't throw exceptions. When a processor fails, it *flags* the message with an error, but the message keeps flowing downstream. Without explicit DLQ handling, a corrupt message arrives at your output looking like a success. The fix is to wrap risky steps in `try` and route on `errored()` at the output boundary.
+**Bento's error model** is worth understanding before you read the rest. Processors don't throw exceptions. When a processor fails, it *flags* the message with an error, but the message keeps flowing downstream. Without explicit DLQ handling, a corrupt message arrives at your output looking like a success. That's the failure mode you're guarding against here.
 
-**`dedupe`** runs first, before the risky steps. It checks the `order_id` against a `memory` cache (configured in `cache_resources`). If the key has been seen before, the message is dropped silently — preventing duplicate processing on replay. The `.or("")` fallback means malformed messages with no `order_id` pass through to the validation step rather than matching a false cache entry.
+**`dedupe`** runs first, before the risky steps. It checks `order_id` against a `memory` cache (declared in `cache_resources`). If the key has already been seen, the message is dropped silently — preventing duplicate processing on replay. The `.or("")` fallback ensures malformed messages with no `order_id` pass through to the validation step rather than matching a false cache entry.
 
-**`try`** wraps a sub-pipeline. The first error in any step causes the remaining steps to be *skipped* — the message goes directly to `catch`. This prevents partial transforms: either all steps run, or none do.
+**`try`** wraps a sub-pipeline. The first error in any step causes the remaining steps to be skipped — the message goes straight to `catch`. This prevents partial transforms: either all steps succeed, or none run.
 
-**`catch`** only runs on messages that errored in the preceding `try`. Here it reshapes the payload to include the original bytes (`content().string()`), the error message (`error()`), and a timestamp. It also writes a `dlq` metadata flag.
+**`catch`** only fires on messages that errored in the preceding `try`. It reshapes the payload to include the original raw bytes (`content().string()`), the error message (`error()`), and a failure timestamp. It also writes a `dlq` metadata flag that the output switch will use to route the message.
 
-**`output.switch`** routes on `errored()` — a built-in Bloblang predicate that returns true if the message carries an error flag. The `|| meta("dlq") == "true"` handles the case where `catch` set the flag explicitly.
+**`output.switch`** routes on `errored()` — a built-in predicate that returns true if the message carries an error flag. The `|| meta("dlq") == "true"` handles the case where `catch` set the flag explicitly. Messages that pass validation land in `processed.jsonl`; everything else goes to `dlq.jsonl`.
+
+I'll be honest — the first time I saw `try`/`catch` in a Bento config I thought it was a bit odd for a YAML pipeline. But once you see a corrupt message arrive in the DLQ with its original payload, error message, and timestamp all neatly captured, you start reaching for it in every pipeline.
 
 ---
 
@@ -115,7 +105,7 @@ Bad messages land in the DLQ with their original payload, error message, and fai
 
 ---
 
-## Things to try
+## Have a go
 
 1. Add a `retry` around a flaky step:
    ```yaml
@@ -133,7 +123,8 @@ Bad messages land in the DLQ with their original payload, error message, and fai
 
 ---
 
-## Why this matters
+## The difference between running and trustworthy
 
-Failing safely is the difference between a pipeline that is "running" and one that is actually trustworthy. DLQ routing + idempotency are the two patterns you need for production readiness; this example shows both without any application code.
+A pipeline without error handling is "running". A pipeline with `try`/`catch`, a DLQ, and idempotency is *trustworthy*. Those are two very different things. Once you've shipped both patterns — and this example shows both together, without any application code — you've got everything you need to run a Bento pipeline in production with confidence.
 
+Well done for making it this far, fellow hungovercoder.

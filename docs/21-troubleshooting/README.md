@@ -8,7 +8,9 @@ canonical_url: https://hungovercoders.com/training/bento/21-troubleshooting
 
 # 22 — Troubleshooting
 
-Things that will go wrong, in roughly the order you'll hit them.
+You've made it through the series. This final lesson isn't really a lesson — it's the reference you'll bookmark and come back to when something goes wrong in production at an inconvenient hour. Things will go wrong. They always do. What follows are the problems you'll hit most often, in roughly the order you'll hit them, with the fix for each one.
+
+Well done getting here, fellow hungovercoder. Keep it close.
 
 ---
 
@@ -156,3 +158,5 @@ Useful for measuring throughput / processor cost.
 - The official docs are excellent: <https://warpstreamlabs.github.io/bento/>
 - Bento Discord (linked from the docs) is responsive.
 - `bento list processors --format full` is the comprehensive offline reference.
+
+That's the series. You started with a one-line `generate` input printing JSON to a terminal, and you've ended up building a production-grade pipeline with WarpStream, HTTP enrichment, windowed aggregation, DLQ routing, Prometheus metrics, OTLP traces, and a proper test suite. All of it in YAML, all of it runnable with a single binary. Cheers.
