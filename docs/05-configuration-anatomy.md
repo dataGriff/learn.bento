@@ -1,9 +1,9 @@
 ---
 title: "Configuration Anatomy"
 series: bento
-order: 4
+order: 5
 description: "Environment variable interpolation, Bloblang expressions, config file splitting, linting, and streams mode."
-canonical_url: https://hungovercoders.com/training/bento/04-configuration-anatomy
+canonical_url: https://hungovercoders.com/training/bento/05-configuration-anatomy
 ---
 
 # 04 — Configuration anatomy

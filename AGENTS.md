@@ -4,20 +4,20 @@
 
 A public tutorial for Bento (declarative stream processing). It serves two purposes simultaneously:
 1. A forkable, runnable tutorial people can `git clone` and use directly
-2. A content source for `hungovercoders.com/training/bento`, where `content/` files are rendered as lesson pages
+2. A content source for `hungovercoders.com/training/bento`, where `docs/` files are rendered as lesson pages
 
 ## Repo layout
 
 ```
-content/    long-form lesson markdown, consumed by the site build
-examples/   self-contained runnable examples (one folder per example)
+docs/       21 numbered lesson files in tutorial order (concepts + hands-on walkthroughs)
+examples/   14 self-contained runnable examples (config.yaml + data), one per hands-on lesson
 ```
 
-One lesson = `content/NN-slug.md` + `examples/NN-slug/`. Concept-only lessons may have a `content/` file with no matching example directory.
+Every hands-on lesson has two files linked by the same slug: `docs/NN-slug.md` (full lesson) and `examples/NN-slug/` (runnable code). Concept-only lessons have a `docs/` file with no matching example directory.
 
 ## Conventions
 
-**Frontmatter is required on every `content/` file.** The site build fails without it. Required fields:
+**Frontmatter is required on every `docs/` file.** The site build fails without it. Required fields:
 
 ```yaml
 ---
@@ -29,10 +29,10 @@ canonical_url: https://hungovercoders.com/training/bento/NN-slug
 ---
 ```
 
-**Naming**: Both `content/` files and `examples/` directories use leading-zero numbering and kebab-case slugs — `01-hello-world`, `02-file-to-file`, etc.
+**Naming**: Both `docs/` files and `examples/` directories use leading-zero numbering and kebab-case slugs — `01-what-is-bento`, `03-hello-world`, etc. The numbering in `docs/` is the tutorial order; `examples/` uses its own sequential numbering (01–14) that maps to the hands-on lessons.
 
 **YAML in `examples/`** uses 2-space indentation. No tabs.
 
-**Example READMEs** explain goals, run instructions, and things to try. Keep them self-contained — assume the reader hasn't read the full lesson.
+**Example READMEs** are minimal pointers — just the title, a link to the full lesson on the site, and the run command. Full lesson content lives in `docs/`.
 
 **Do not add placeholder values** to example configs. Every example must run as-is (`bento -c config.yaml`) without editing.

@@ -1,9 +1,9 @@
 ---
 title: "Troubleshooting"
 series: bento
-order: 7
+order: 21
 description: "Solutions to the most common Bento problems: validation errors, missing messages, Bloblang issues, and connection failures."
-canonical_url: https://hungovercoders.com/training/bento/07-troubleshooting
+canonical_url: https://hungovercoders.com/training/bento/21-troubleshooting
 ---
 
 # 07 — Troubleshooting

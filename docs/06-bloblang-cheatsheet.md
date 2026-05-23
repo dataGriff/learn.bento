@@ -1,9 +1,9 @@
 ---
 title: "Bloblang Cheat-Sheet"
 series: bento
-order: 5
+order: 6
 description: "The complete Bloblang quick reference: roots, metadata, functions, string and number methods, conditionals, and filtering."
-canonical_url: https://hungovercoders.com/training/bento/05-bloblang-cheatsheet
+canonical_url: https://hungovercoders.com/training/bento/06-bloblang-cheatsheet
 ---
 
 # 05 — Bloblang cheat-sheet
