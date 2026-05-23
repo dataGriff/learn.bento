@@ -12,7 +12,7 @@ canonical_url: https://hungovercoders.com/training/bento/03-hello-world
 
 **Prerequisites:** Bento installed — see [02 — Installation](02-installation.md).
 
-> If you have the repo cloned: `make ex01` or `bento -c examples/01-hello-world/config.yaml`.
+> If you have the repo cloned: `make ex01`.
 
 ---
 
@@ -56,7 +56,7 @@ Save the config above as `config.yaml`, then:
 bento -c config.yaml
 ```
 
-Or if you have the repo cloned: `make ex01`.
+Or if you have the repo cloned, `make ex01` does this for you.
 
 You should see one JSON line per second:
 
