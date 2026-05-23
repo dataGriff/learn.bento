@@ -85,7 +85,7 @@ You'll see Bento start up and report that it's listening. In a second terminal, 
 ```bash
 curl -s -X POST http://localhost:4195/post \
   -H 'content-type: application/json' \
-  -d '{"user":"alice","event":"login"}' | jq
+  -d '{"user":"griff","event":"login"}' | jq
 ```
 
 You'll see the response synthesised by Bento:
@@ -94,7 +94,7 @@ You'll see the response synthesised by Bento:
 {
   "ok": true,
   "received_event": "login",
-  "received_user": "alice",
+  "received_user": "griff",
   "request_id": "..."
 }
 ```

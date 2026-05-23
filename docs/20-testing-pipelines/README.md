@@ -74,15 +74,15 @@ tests:
     target_processors: '0-2'
     input_batch:
       - content: |
-          {"order_id":"o-1","qty":1,"items":[{"qty":2,"price":15},{"qty":1,"price":5}]}
+          {"order_id":"o-1","qty":1,"items":[{"sku":"mango-punk","qty":2,"price":15},{"sku":"tiny-ipa","qty":1,"price":5}]}
     output_batches:
       -
         - json_equals:
             order_id: "o-1"
             qty:      1
             items:
-              - { qty: 2, price: 15 }
-              - { qty: 1, price: 5 }
+              - { sku: "mango-punk", qty: 2, price: 15 }
+              - { sku: "tiny-ipa",   qty: 1, price: 5  }
             total:    35
             tier:     "silver"
 
@@ -95,7 +95,7 @@ tests:
   - name: flags negative qty as error
     target_processors: '0'
     input_batch:
-      - content: '{"order_id":"o-3","qty":-1,"items":[{"qty":1,"price":5}]}'
+      - content: '{"order_id":"o-3","qty":-1,"items":[{"sku":"tiny-ipa","qty":1,"price":6}]}'
     output_batches:
       -
         - error_contains: 'qty must be >= 0'

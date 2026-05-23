@@ -31,9 +31,9 @@ The input file looks like this:
 
 ```csv
 order_id,customer,amount,paid
-1001,alice,12.50,true
-1002,bob,99.00,false
-1003,carol,7.25,true
+1001,griff,18.50,true
+1002,morgan,42.00,false
+1003,rhys,27.75,true
 ```
 
 ---
@@ -88,9 +88,9 @@ cat ./out/orders.jsonl
 Expected:
 
 ```json
-{"order_id":1001,"customer":"alice","amount":12.5,"paid":true,"processed_at":"..."}
-{"order_id":1002,"customer":"bob","amount":99,"paid":false,"processed_at":"..."}
-{"order_id":1003,"customer":"carol","amount":7.25,"paid":true,"processed_at":"..."}
+{"order_id":1001,"customer":"griff","amount":18.5,"paid":true,"processed_at":"..."}
+{"order_id":1002,"customer":"morgan","amount":42,"paid":false,"processed_at":"..."}
+{"order_id":1003,"customer":"rhys","amount":27.75,"paid":true,"processed_at":"..."}
 ```
 
 ---

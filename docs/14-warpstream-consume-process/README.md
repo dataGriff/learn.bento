@@ -105,7 +105,7 @@ You should see events like this, fellow hungovercoder:
 ```json
 {
   "order_id": "...",
-  "customer_id": "alice",
+  "customer_id": "griff",
   "total": 42,
   "tier": "bronze",
   "source": {

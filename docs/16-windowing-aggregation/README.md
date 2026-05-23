@@ -32,7 +32,7 @@ input:
   generate:
     interval: 200ms
     mapping: |
-      let customers = ["alice","bob","carol"]
+      let customers = ["griff","ceri","morgan"]
       root.order_id    = uuid_v4()
       root.customer_id = $customers.index(random_int(min:0, max:2))
       root.amount      = random_int(min:1, max:100)
@@ -112,7 +112,7 @@ Sample line:
 ```json
 {
   "window_end":   "2026-05-11T10:00:05Z",
-  "customer_id":  "alice",
+  "customer_id":  "griff",
   "order_count":  4,
   "total_amount": 312
 }

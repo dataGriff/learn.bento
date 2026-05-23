@@ -1,3 +1,3 @@
-{"order_id":"o-1","qty":1,"items":[{"qty":2,"price":15},{"qty":1,"price":5}]}
+{"order_id":"o-1","qty":1,"items":[{"sku":"mango-punk","qty":2,"price":15},{"sku":"tiny-ipa","qty":1,"price":5}]}
 {"order_id":"o-2","qty":0,"items":[]}
-{"order_id":"o-3","qty":2,"items":[{"qty":1,"price":75}]}
+{"order_id":"o-3","qty":2,"items":[{"sku":"dirty-stop-out","qty":1,"price":35}]}

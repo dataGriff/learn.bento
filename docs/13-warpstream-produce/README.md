@@ -21,8 +21,8 @@ input:
   generate:
     interval: 1s
     mapping: |
-      let customers = ["alice","bob","carol","dave","erin"]
-      let skus      = ["A","B","C","D"]
+      let customers = ["griff","ceri","morgan","rhys","sian"]
+      let skus      = ["tiny-ipa","mango-punk","cwtch","dirty-stop-out","clwb-trop"]
       root.order_id    = uuid_v4()
       root.customer_id = $customers.index(random_int(min:0, max:4))
       root.sku         = $skus.index(random_int(min:0, max:3))
