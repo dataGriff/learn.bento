@@ -1,6 +1,3 @@
-@../library/datagriff-voice-guide.md
-@../library/blog-tutorial-template.md
-
 # learn.bento — agent context
 
 ## What this repo is
